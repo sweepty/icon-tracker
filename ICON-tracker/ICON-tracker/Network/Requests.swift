@@ -13,7 +13,7 @@ import RxSwift
 import RxCocoa
 
 class Requests {
-    private var iconService: ICONService!
+    private var iconService: ICONService
     
     init() {
         switch UserDefaults.standard.integer(forKey: "network") {
@@ -28,17 +28,17 @@ class Requests {
         }
     }
     
-    func getTotalSupply(_ completion: @escaping(BigUInt?) -> Void)  {
-        iconService.getTotalSupply().async { (result) in
-            switch result {
-            case .success(let value):
-                completion(value)
-                return
-            case .failure(let err):
-                completion(nil)
-                Log.Error(err)
-                return
-            }
+    func getTotalSupply() -> Observable<String> {
+        let request = iconService.getTotalSupply()
+        let response = request.execute()
+        
+        switch response {
+        case .success(var value):
+            value = value.convertToICX()
+            return Observable.just("\(value)")
+        case .failure(let error):
+            Log.Error(error)
+            return Observable.just("error")
         }
     }
 }

@@ -48,10 +48,6 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
-                                <connections>
-                                    <outlet property="dataSource" destination="KB1-lA-Ozz" id="lmf-L1-k45"/>
-                                    <outlet property="delegate" destination="KB1-lA-Ozz" id="0zG-vn-4kC"/>
-                                </connections>
                             </tableView>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5tI-8r-y5l">
                                 <rect key="frame" x="0.0" y="88" width="414" height="193"/>
@@ -109,11 +105,7 @@
                         <viewLayoutGuide key="safeArea" id="9ex-Ed-lNk"/>
                     </view>
                     <navigationItem key="navigationItem" id="pzl-A5-bdi">
-                        <barButtonItem key="rightBarButtonItem" title="Item" id="SYu-JM-cjZ">
-                            <connections>
-                                <action selector="selectNetworkBarButton:" destination="KB1-lA-Ozz" id="yJs-LW-fSC"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Item" id="SYu-JM-cjZ"/>
                     </navigationItem>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
