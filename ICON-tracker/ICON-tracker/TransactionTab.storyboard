@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="KIy-wD-31i">
-                                <rect key="frame" x="0.0" y="339" width="414" height="523"/>
+                                <rect key="frame" x="0.0" y="339" width="414" height="474"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
@@ -105,10 +105,15 @@
                         <viewLayoutGuide key="safeArea" id="9ex-Ed-lNk"/>
                     </view>
                     <navigationItem key="navigationItem" id="pzl-A5-bdi">
-                        <barButtonItem key="rightBarButtonItem" title="Item" id="SYu-JM-cjZ"/>
+                        <barButtonItem key="rightBarButtonItem" title="Item" id="SYu-JM-cjZ">
+                            <connections>
+                                <segue destination="mDk-1T-vym" kind="show" id="uXv-3p-h8s"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="chooseNetworkButton" destination="SYu-JM-cjZ" id="LxJ-M0-r70"/>
                         <outlet property="segmentedControl" destination="v0q-If-QF3" id="1ux-JG-b5a"/>
                         <outlet property="tableView" destination="KIy-wD-31i" id="Pe4-aH-jCF"/>
                         <outlet property="totalSupplyLabel" destination="4Zj-9O-x50" id="dl4-tt-ADa"/>
@@ -118,6 +123,16 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MGp-n8-2R6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="873.91304347826099" y="-199.55357142857142"/>
+        </scene>
+        <!--ChooseNetwork-->
+        <scene sceneID="S7x-lG-T1s">
+            <objects>
+                <viewControllerPlaceholder storyboardName="ChooseNetwork" id="mDk-1T-vym" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="R8A-vU-FEl"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="acZ-ux-hQF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1660" y="-276"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="2Dq-0s-hLs">

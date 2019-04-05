@@ -13,6 +13,7 @@ import BigInt
 
 class TransactionTabViewController: UIViewController {
 
+    @IBOutlet weak var chooseNetworkButton: UIBarButtonItem!
     @IBOutlet weak var usdPriceLabel: UILabel!
     @IBOutlet weak var totalSupplyLabel: UILabel!
     
@@ -20,13 +21,21 @@ class TransactionTabViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     
+    private let refreshControl = UIRefreshControl()
+    
     private let disposeBag = DisposeBag()
     
-    let viewModel: TransactionViewModel = TransactionViewModel()
+    var viewModel: TransactionViewModel!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        viewModel = TransactionViewModel()
+        
+        
+        
+        refreshControl.sendActions(for: .valueChanged)
         
         setupUI()
         setupBindings()
@@ -35,11 +44,23 @@ class TransactionTabViewController: UIViewController {
     func setupUI() {
         totalSupplyLabel.isHidden = true
         usdPriceLabel.isHidden = true
+        
+        tableView.insertSubview(refreshControl, at: 0)
     }
     
     func setupBindings() {
-        // 양방향으로 바인딩.
-        _ = segmentedControl.rx.value <-> viewModel.segmentedValue
+        segmentedControl.rx.value
+            .bind(to: viewModel.segmentedValue)
+            .disposed(by: disposeBag)
+        
+        viewModel.segmentedValue
+            .bind(to: segmentedControl.rx.value)
+            .disposed(by: disposeBag)
+        
+        viewModel.title
+            .bind(to: navigationItem.rx.title)
+            .disposed(by: disposeBag)
+        
         
         // Subject(정확히 말하면 BehaviorRelay)는 Observer와 Observable 둘 다 될 수 있기 때문에 하나를 결정해야한다.
         // segmentedValue가 변경되면 로그를 찍어주고 싶기 때문에 Observable로 변경한다.
@@ -52,6 +73,7 @@ class TransactionTabViewController: UIViewController {
         
         // Current USD Price
         viewModel.currentPrice
+            .distinctUntilChanged()
             .bind(to: usdPriceLabel.rx.text)
             .disposed(by: disposeBag)
         
@@ -62,6 +84,7 @@ class TransactionTabViewController: UIViewController {
         
         // Total Supply
         viewModel.icxSupply
+            .distinctUntilChanged()
             .bind(to: totalSupplyLabel.rx.text)
             .disposed(by: disposeBag)
         
@@ -72,14 +95,47 @@ class TransactionTabViewController: UIViewController {
         
         // TableView
         viewModel.blockItems
+            .observeOn(MainScheduler.instance)
+            .do(onNext: { [weak self] _ in self?.refreshControl.endRefreshing() })
             .bind(to: tableView.rx.items(cellIdentifier: "cell", cellType: UITableViewCell.self)) { [weak self] (_, block, cell) in
                 self?.setUpBlockCell(cell, block)
             }.disposed(by: disposeBag)
+        
+        refreshControl.rx.controlEvent(.valueChanged)
+            .bind(to: viewModel.reload)
+            .disposed(by: disposeBag)
     }
     
     private func setUpBlockCell(_ cell: UITableViewCell, _ blocks: Block) {
-        cell.textLabel?.text = blocks.hash
-        cell.detailTextLabel?.text = blocks.createDate
+//        cell.textLabel?.text = blocks.hash
+        cell.textLabel?.text = "\(blocks.height)"
+        cell.detailTextLabel?.text = "\(blocks.txCount)"
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        var destinationVC: UIViewController? = segue.destination
+
+        if let nvc = destinationVC as? UINavigationController {
+            destinationVC = nvc.viewControllers.first
+        }
+
+        if let viewController = destinationVC as? ChooseNetworkViewController {
+            prepareLanguageListViewController(viewController)
+        }
+        
+    }
+    
+    /// Setups `LanguageListViewController` befor navigation.
+    ///
+    /// - Parameter viewController: `LanguageListViewController` to prepare.
+    private func prepareLanguageListViewController(_ viewController: ChooseNetworkViewController) {
+        let networkListViewModel = ChooseNetworkViewModel()
+        
+        networkListViewModel.didSelectNetwork
+            .bind(to: viewModel.setCurrentNetwork)
+            .disposed(by: disposeBag)
+        
+        viewController.viewModel = networkListViewModel
     }
 
     /*

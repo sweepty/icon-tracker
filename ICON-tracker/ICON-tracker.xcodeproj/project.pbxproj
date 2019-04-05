@@ -7,12 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1B1EA6372256E2A600371478 /* ChooseNetwork.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B1EA6362256E2A600371478 /* ChooseNetwork.storyboard */; };
+		1B1EA6392256E45300371478 /* ChooseNetworkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1EA6382256E45300371478 /* ChooseNetworkViewController.swift */; };
+		1B1EA63D2256E49500371478 /* ChooseNetworkViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1EA63C2256E49500371478 /* ChooseNetworkViewModel.swift */; };
 		1B244E86224CA01700415791 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B244E85224CA01700415791 /* AppDelegate.swift */; };
 		1B244E8B224CA01700415791 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B244E89224CA01700415791 /* Main.storyboard */; };
 		1B244E8D224CA01A00415791 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1B244E8C224CA01A00415791 /* Assets.xcassets */; };
 		1B244E90224CA01A00415791 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B244E8E224CA01A00415791 /* LaunchScreen.storyboard */; };
 		1BBFF8FC22531CDD00471174 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBFF8FB22531CDC00471174 /* Response.swift */; };
-		1BBFF90822534C4200471174 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBFF90722534C4200471174 /* Operators.swift */; };
 		1BE53B842255A9B200AC6397 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE53B832255A9B200AC6397 /* Error.swift */; };
 		1BE53B882255D04700AC6397 /* TransactionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE53B872255D04700AC6397 /* TransactionViewModel.swift */; };
 		1BEFED23224DBA2900CCDD1F /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BEFED22224DBA2900CCDD1F /* URL.swift */; };
@@ -27,6 +29,9 @@
 
 /* Begin PBXFileReference section */
 		162776705E959FC628F9C55E /* Pods-ICON-tracker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ICON-tracker.release.xcconfig"; path = "Pods/Target Support Files/Pods-ICON-tracker/Pods-ICON-tracker.release.xcconfig"; sourceTree = "<group>"; };
+		1B1EA6362256E2A600371478 /* ChooseNetwork.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ChooseNetwork.storyboard; sourceTree = "<group>"; };
+		1B1EA6382256E45300371478 /* ChooseNetworkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseNetworkViewController.swift; sourceTree = "<group>"; };
+		1B1EA63C2256E49500371478 /* ChooseNetworkViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseNetworkViewModel.swift; sourceTree = "<group>"; };
 		1B244E82224CA01700415791 /* ICON-tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ICON-tracker.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1B244E85224CA01700415791 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1B244E8A224CA01700415791 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -34,7 +39,6 @@
 		1B244E8F224CA01A00415791 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1B244E91224CA01A00415791 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1BBFF8FB22531CDC00471174 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
-		1BBFF90722534C4200471174 /* Operators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
 		1BE53B832255A9B200AC6397 /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		1BE53B872255D04700AC6397 /* TransactionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionViewModel.swift; sourceTree = "<group>"; };
 		1BEFED22224DBA2900CCDD1F /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
@@ -91,7 +95,9 @@
 				1B244E91224CA01A00415791 /* Info.plist */,
 				1BF335A32251D29700A1F2D8 /* Utils.swift */,
 				1BF335A72251FD9500A1F2D8 /* Logger.swift */,
-				1BBFF90722534C4200471174 /* Operators.swift */,
+				1B1EA6362256E2A600371478 /* ChooseNetwork.storyboard */,
+				1B1EA6382256E45300371478 /* ChooseNetworkViewController.swift */,
+				1B1EA63C2256E49500371478 /* ChooseNetworkViewModel.swift */,
 			);
 			path = "ICON-tracker";
 			sourceTree = "<group>";
@@ -206,6 +212,7 @@
 				1B244E8D224CA01A00415791 /* Assets.xcassets in Resources */,
 				1BEFED25224DC5C200CCDD1F /* TransactionTab.storyboard in Resources */,
 				1B244E8B224CA01700415791 /* Main.storyboard in Resources */,
+				1B1EA6372256E2A600371478 /* ChooseNetwork.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -285,12 +292,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B1EA63D2256E49500371478 /* ChooseNetworkViewModel.swift in Sources */,
 				1BF335A22251CEBB00A1F2D8 /* TransactionTabViewController.swift in Sources */,
 				1BEFED29224DDAE900CCDD1F /* Requests.swift in Sources */,
+				1B1EA6392256E45300371478 /* ChooseNetworkViewController.swift in Sources */,
 				1BE53B842255A9B200AC6397 /* Error.swift in Sources */,
 				1BBFF8FC22531CDD00471174 /* Response.swift in Sources */,
 				1BF335A62251EDD300A1F2D8 /* TrackerResponse.swift in Sources */,
-				1BBFF90822534C4200471174 /* Operators.swift in Sources */,
 				1B244E86224CA01700415791 /* AppDelegate.swift in Sources */,
 				1BEFED23224DBA2900CCDD1F /* URL.swift in Sources */,
 				1BF335A42251D29700A1F2D8 /* Utils.swift in Sources */,

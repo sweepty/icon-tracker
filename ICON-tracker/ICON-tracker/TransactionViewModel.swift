@@ -11,9 +11,6 @@ import RxSwift
 import RxCocoa
 
 class TransactionViewModel {
-    let trackerService: TrackerService = TrackerService()
-    
-    let iconService: Requests = Requests()
     // BehaviorRelay는 BehaviorSubject의 wrapper로써 RxSwift 4.0에서 deprecated된 Variable와 개념이 동일하다.
     // 즉, onNext만 사용가능하고, 할당이 해제되면 자동으로 onCompleted() 이벤트를 보낸다. (maybe)
     // error나 completed로 종료되지 않는다.
@@ -22,34 +19,58 @@ class TransactionViewModel {
     // UISegmentedControl value next(0)
     let segmentedValue = BehaviorRelay(value: 0)
     
-    let pageNums = BehaviorRelay(value: 1)
+    var pageNums = BehaviorRelay(value: 1)
     
-    let title: Observable<String>
+    var title: Observable<String>
     
-    var currentPrice: Observable<String>
+    let setCurrentNetwork: AnyObserver<Int>
     
-    var icxSupply: Observable<String>
+    let reload: AnyObserver<Void>
     
-    var blockItems: Observable<[Block]>
+    let currentPrice: Observable<String>
     
-    init() {
-        self.blockItems = trackerService.getBlockList(page: pageNums.value)
+    let icxSupply: Observable<String>
+    
+    let blockItems: Observable<[Block]>
+
+    
+    init(trackerService: TrackerService = TrackerService(), iconService: Requests = Requests()) {
+        let userDefaultsNetwork = UserDefaults.standard.integer(forKey: "network")
         
-        switch UserDefaults.standard.integer(forKey: "network") {
-        case 0:
-            self.title = Observable.just("Mainnet")
-        case 1:
-            self.title = Observable.just("Testnet for DApp")
-        case 2:
-            self.title = Observable.just("Testnet for Exchange")
-        default:
-            self.title = Observable.just("Mainnet")
+        let _reload = BehaviorSubject<Void>(value: ())
+        self.reload = _reload.asObserver()
+
+        let _currentNetwork = BehaviorSubject<Int>(value: userDefaultsNetwork)
+        self.setCurrentNetwork = _currentNetwork.asObserver()
+        
+        self.title = _currentNetwork.asObservable().map {
+            switch $0 {
+            case 0:
+                return "Mainnet"
+            case 1:
+                return "Testnet for DApps"
+            case 2:
+                return "Testnet for Exchanges"
+            default:
+                return "Mainnet"
+            }
         }
         
-        self.currentPrice = trackerService.getCurrentExchange()
-
-        self.icxSupply = iconService.getTotalSupply()
+        self.currentPrice = Observable.combineLatest( _reload, _currentNetwork ) { _, network in network }
+            .flatMapLatest { network in
+                trackerService.getCurrentExchange(network: network)
+        }
+        
+        self.icxSupply = Observable.combineLatest( _reload, _currentNetwork ) { _, network in network }
+            .flatMapLatest { network in
+                iconService.getTotalSupply(network: network)
+        }
+        
+        let _pageNums = self.pageNums.value
+        
+        self.blockItems = Observable.combineLatest( _reload, _currentNetwork ) { _, network in network }
+            .flatMapLatest { network in
+                trackerService.getBlockList(network: network, page: _pageNums)
+        }
     }
-    
-    
 }

@@ -12,10 +12,15 @@ import BigInt
 import RxSwift
 import RxCocoa
 
+class ICON {
+    func getNetworklist() -> Observable<[Int]> {
+        return Observable.just([0, 1 ,2])
+    }
+}
+
 class Requests {
-    private var iconService: ICONService
-    
-    init() {
+    func setNetwork(network: Int) -> ICONService {
+        var iconService: ICONService
         switch UserDefaults.standard.integer(forKey: "network") {
         case 0:
             iconService = ICONService.init(provider: BaseURL.mainnet.url, nid: BaseURL.mainnet.nid)
@@ -26,9 +31,11 @@ class Requests {
         default:
             iconService = ICONService.init(provider: BaseURL.mainnet.url, nid: BaseURL.mainnet.nid)
         }
+        return iconService
     }
     
-    func getTotalSupply() -> Observable<String> {
+    func getTotalSupply(network: Int) -> Observable<String> {
+        let iconService = setNetwork(network: network)
         let request = iconService.getTotalSupply()
         let response = request.execute()
         
@@ -48,18 +55,20 @@ class TrackerRequests {
     var method: TrackerMethod
     var params: [String : Any]
     
-    init(method: TrackerMethod, params: [String : Any]) {
+    init(network: Int, method: TrackerMethod, params: [String : Any]) {
         let url: URL
-        switch UserDefaults.standard.integer(forKey: "network") {
-        case 0:
+
+        switch network {
+            case 0:
             url = URL(string: BaseURL.mainnet.tracker)!
-        case 1:
+            case 1:
             url = URL(string: BaseURL.testnetforDApps.tracker)!
-        case 2:
+            case 2:
             url = URL(string: BaseURL.testnetforExchanges.tracker)!
-        default:
+            default:
             url = URL(string: BaseURL.mainnet.tracker)!
         }
+        
         self.provider = url
         self.method = method
         self.params = params
@@ -93,8 +102,8 @@ class TrackerService {
         self.session = session
     }
     
-    func getCurrentExchange() -> Observable<String> {
-        let request = TrackerRequests(method: .getCurrentExchangeList, params: ["codeList": "icxusd"])
+    func getCurrentExchange(network: Int) -> Observable<String> {
+        let request = TrackerRequests(network: network, method: .getCurrentExchangeList, params: ["codeList": "icxusd"])
         
         return session.rx.data(request: request.createRequest())
             .flatMap({ (value) -> Observable<String> in
@@ -103,7 +112,7 @@ class TrackerService {
                 let price = decoded.data.first?.price
                 
                 guard let usdPrice = price, let tmp = Double(usdPrice) else {
-                    return Observable.just("error")
+                    return Observable.error(ICONTrackerError.unknown)
                 }
                 let floorPrice = floor(tmp * 1000) / 1000
                 let final = String(floorPrice)
@@ -112,8 +121,8 @@ class TrackerService {
             })
     }
     
-    func getBlockList(page: Int) -> Observable<[Block]> {
-        let request = TrackerRequests(method: .getBlockList, params: ["page": page, "count": 25])
+    func getBlockList(network: Int, page: Int) -> Observable<[Block]> {
+        let request = TrackerRequests(network: network, method: .getBlockList, params: ["page": page, "count": 25])
         
         return session.rx.data(request: request.createRequest())
             .flatMap({ (value) -> Observable<[Block]> in
@@ -127,16 +136,16 @@ class TrackerService {
             })
     }
     
-    func getTransactionList(page: Int) -> Observable<[TransactionBlock]> {
-        let request = TrackerRequests(method: .getTransactionRecentTx, params: ["page": page, "count": 25])
-        
+    func getTransactionList(network: Int, page: Int) -> Observable<[TransactionBlock]> {
+        let request = TrackerRequests(network: network, method: .getTransactionRecentTx, params: ["page": page, "count": 25])
+
         return session.rx.data(request: request.createRequest())
             .flatMap({ (value) -> Observable<[TransactionBlock]> in
                 let jsonVal = try JSONSerialization.jsonObject(with: value, options: .allowFragments) as! [String :Any]
                 let dataVal = jsonVal["data"]
                 let finalData = try JSONSerialization.data(withJSONObject: dataVal!, options: .prettyPrinted)
                 let decoded = try decoder.decode([TransactionBlock].self, from: finalData)
-                
+
                 return Observable.just(decoded)
             })
     }
