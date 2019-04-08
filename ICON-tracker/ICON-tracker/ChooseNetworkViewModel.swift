@@ -19,12 +19,9 @@ class ChooseNetworkViewModel {
     let didSelectNetwork: Observable<Int>
     
     init(icon: ICON = ICON()) {
-        let userDefaultsNetwork = UserDefaults.standard.integer(forKey: "network")
-        let _selectNetwork = BehaviorSubject<Int>(value: userDefaultsNetwork)
+        let _selectNetwork = PublishSubject<Int>()
         self.selectNetwork = _selectNetwork.asObserver()
         self.didSelectNetwork = _selectNetwork.asObservable()
-            
         self.networks = icon.getNetworklist()
-        
     }
 }

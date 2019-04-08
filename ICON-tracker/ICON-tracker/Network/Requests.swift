@@ -21,7 +21,7 @@ class ICON {
 class Requests {
     func setNetwork(network: Int) -> ICONService {
         var iconService: ICONService
-        switch UserDefaults.standard.integer(forKey: "network") {
+        switch network {
         case 0:
             iconService = ICONService.init(provider: BaseURL.mainnet.url, nid: BaseURL.mainnet.nid)
         case 1:
