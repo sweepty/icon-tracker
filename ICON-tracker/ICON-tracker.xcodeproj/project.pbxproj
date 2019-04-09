@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1B1DA157225C3CFF00338383 /* SettingTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1DA156225C3CFF00338383 /* SettingTabViewController.swift */; };
+		1B1DA159225C3D1900338383 /* SettingTab.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B1DA158225C3D1900338383 /* SettingTab.storyboard */; };
+		1B1DA15C225C3E4000338383 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1DA15B225C3E4000338383 /* SettingViewModel.swift */; };
+		1B1DA15E225C488D00338383 /* SettingTabTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1DA15D225C488D00338383 /* SettingTabTableViewCell.swift */; };
+		1B1DA160225C69C700338383 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1DA15F225C69C700338383 /* Theme.swift */; };
 		1B1EA6372256E2A600371478 /* ChooseNetwork.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B1EA6362256E2A600371478 /* ChooseNetwork.storyboard */; };
 		1B1EA6392256E45300371478 /* ChooseNetworkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1EA6382256E45300371478 /* ChooseNetworkViewController.swift */; };
 		1B1EA63D2256E49500371478 /* ChooseNetworkViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1EA63C2256E49500371478 /* ChooseNetworkViewModel.swift */; };
@@ -29,6 +34,11 @@
 
 /* Begin PBXFileReference section */
 		162776705E959FC628F9C55E /* Pods-ICON-tracker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ICON-tracker.release.xcconfig"; path = "Pods/Target Support Files/Pods-ICON-tracker/Pods-ICON-tracker.release.xcconfig"; sourceTree = "<group>"; };
+		1B1DA156225C3CFF00338383 /* SettingTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTabViewController.swift; sourceTree = "<group>"; };
+		1B1DA158225C3D1900338383 /* SettingTab.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SettingTab.storyboard; sourceTree = "<group>"; };
+		1B1DA15B225C3E4000338383 /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
+		1B1DA15D225C488D00338383 /* SettingTabTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTabTableViewCell.swift; sourceTree = "<group>"; };
+		1B1DA15F225C69C700338383 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		1B1EA6362256E2A600371478 /* ChooseNetwork.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ChooseNetwork.storyboard; sourceTree = "<group>"; };
 		1B1EA6382256E45300371478 /* ChooseNetworkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseNetworkViewController.swift; sourceTree = "<group>"; };
 		1B1EA63C2256E49500371478 /* ChooseNetworkViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseNetworkViewModel.swift; sourceTree = "<group>"; };
@@ -64,6 +74,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1B1DA15A225C3D9300338383 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				1B1EA63C2256E49500371478 /* ChooseNetworkViewModel.swift */,
+				1B1EA6382256E45300371478 /* ChooseNetworkViewController.swift */,
+				1B1EA6362256E2A600371478 /* ChooseNetwork.storyboard */,
+				1B1DA156225C3CFF00338383 /* SettingTabViewController.swift */,
+				1B1DA158225C3D1900338383 /* SettingTab.storyboard */,
+				1B1DA15B225C3E4000338383 /* SettingViewModel.swift */,
+				1B1DA15D225C488D00338383 /* SettingTabTableViewCell.swift */,
+				1B1DA15F225C69C700338383 /* Theme.swift */,
+			);
+			path = Setting;
+			sourceTree = "<group>";
+		};
 		1B244E79224CA01700415791 = {
 			isa = PBXGroup;
 			children = (
@@ -95,9 +120,7 @@
 				1B244E91224CA01A00415791 /* Info.plist */,
 				1BF335A32251D29700A1F2D8 /* Utils.swift */,
 				1BF335A72251FD9500A1F2D8 /* Logger.swift */,
-				1B1EA6362256E2A600371478 /* ChooseNetwork.storyboard */,
-				1B1EA6382256E45300371478 /* ChooseNetworkViewController.swift */,
-				1B1EA63C2256E49500371478 /* ChooseNetworkViewModel.swift */,
+				1B1DA15A225C3D9300338383 /* Setting */,
 			);
 			path = "ICON-tracker";
 			sourceTree = "<group>";
@@ -211,6 +234,7 @@
 				1B244E90224CA01A00415791 /* LaunchScreen.storyboard in Resources */,
 				1B244E8D224CA01A00415791 /* Assets.xcassets in Resources */,
 				1BEFED25224DC5C200CCDD1F /* TransactionTab.storyboard in Resources */,
+				1B1DA159225C3D1900338383 /* SettingTab.storyboard in Resources */,
 				1B244E8B224CA01700415791 /* Main.storyboard in Resources */,
 				1B1EA6372256E2A600371478 /* ChooseNetwork.storyboard in Resources */,
 			);
@@ -228,15 +252,13 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-ICON-tracker/Pods-ICON-tracker-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/BigInt/BigInt.framework",
 				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/ICONKit/ICONKit.framework",
-				"${BUILT_PRODUCTS_DIR}/ReactorKit/ReactorKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Result/Result.framework",
-				"${BUILT_PRODUCTS_DIR}/RxAtomic/RxAtomic.framework",
 				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/RxTheme/RxTheme.framework",
 				"${BUILT_PRODUCTS_DIR}/SipHash/SipHash.framework",
 				"${BUILT_PRODUCTS_DIR}/scrypt/scrypt.framework",
 				"${BUILT_PRODUCTS_DIR}/secp256k1_ios/secp256k1_ios.framework",
@@ -245,15 +267,13 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BigInt.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ICONKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactorKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxAtomic.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxTheme.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SipHash.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/scrypt.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/secp256k1_ios.framework",
@@ -293,13 +313,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				1B1EA63D2256E49500371478 /* ChooseNetworkViewModel.swift in Sources */,
+				1B1DA15C225C3E4000338383 /* SettingViewModel.swift in Sources */,
 				1BF335A22251CEBB00A1F2D8 /* TransactionTabViewController.swift in Sources */,
 				1BEFED29224DDAE900CCDD1F /* Requests.swift in Sources */,
+				1B1DA15E225C488D00338383 /* SettingTabTableViewCell.swift in Sources */,
 				1B1EA6392256E45300371478 /* ChooseNetworkViewController.swift in Sources */,
 				1BE53B842255A9B200AC6397 /* Error.swift in Sources */,
 				1BBFF8FC22531CDD00471174 /* Response.swift in Sources */,
 				1BF335A62251EDD300A1F2D8 /* TrackerResponse.swift in Sources */,
+				1B1DA160225C69C700338383 /* Theme.swift in Sources */,
 				1B244E86224CA01700415791 /* AppDelegate.swift in Sources */,
+				1B1DA157225C3CFF00338383 /* SettingTabViewController.swift in Sources */,
 				1BEFED23224DBA2900CCDD1F /* URL.swift in Sources */,
 				1BF335A42251D29700A1F2D8 /* Utils.swift in Sources */,
 				1BF335A82251FD9500A1F2D8 /* Logger.swift in Sources */,

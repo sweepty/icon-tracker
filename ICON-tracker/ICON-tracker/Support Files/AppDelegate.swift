@@ -18,7 +18,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Default network is mainnet.
         guard UserDefaults.standard.string(forKey: "network") != nil else {
             Log.Info("First Launch")
+            
+            // 네트워크 설정
             UserDefaults.standard.set(0, forKey: "network")
+            
+            // 다크모드 설정
+            UserDefaults.standard.set(false, forKey: "darkmode")
             return true
         }
         return true
