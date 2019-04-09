@@ -1,5 +1,4 @@
 PODS:
-  - Alamofire (5.0.0-beta.4)
   - BigInt (3.1.0):
     - SipHash (~> 1.2)
   - CryptoSwift (0.11.0)
@@ -9,56 +8,50 @@ PODS:
     - Result
     - scrypt
     - secp256k1_ios (~> 0.1.3)
-  - ReactorKit (1.2.1):
-    - RxSwift (>= 4.0.0)
   - Result (4.1.0)
-  - RxAtomic (4.4.2)
-  - RxCocoa (4.4.2):
+  - RxCocoa (4.5.0):
     - RxSwift (>= 4.4.2, ~> 4.4)
-  - RxSwift (4.4.2):
-    - RxAtomic (>= 4.4.2, ~> 4.4)
+  - RxSwift (4.5.0)
+  - RxTheme (3.3.0):
+    - RxCocoa (>= 4.4.2, ~> 4.4)
+    - RxSwift (>= 4.4.2, ~> 4.4)
   - scrypt (2.0):
     - CryptoSwift (~> 0.11)
   - secp256k1_ios (0.1.3)
   - SipHash (1.2.2)
 
 DEPENDENCIES:
-  - Alamofire (~> 5.0.0-beta.3)
   - BigInt
   - ICONKit (~> 0.3.0)
-  - ReactorKit
   - RxCocoa (~> 4.0)
   - RxSwift (~> 4.0)
+  - RxTheme (~> 3.0)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
-    - Alamofire
     - BigInt
     - CryptoSwift
     - ICONKit
-    - ReactorKit
     - Result
-    - RxAtomic
     - RxCocoa
     - RxSwift
+    - RxTheme
     - scrypt
     - secp256k1_ios
     - SipHash
 
 SPEC CHECKSUMS:
-  Alamofire: 6458d95477bc40adf10129f22c67cfb014162dc8
   BigInt: 76b5dfdfa3e2e478d4ffdf161aeede5502e2742f
   CryptoSwift: ad5208dd2aae0a764ea4ce2c2d34bd067cae67f0
   ICONKit: 1e73834efe4a73f0e9574688b7b17b098948da33
-  ReactorKit: 8be57f0527ad1ac2963cd5c338274a46a01e57a3
   Result: bd966fac789cc6c1563440b348ab2598cc24d5c7
-  RxAtomic: d00e97c10db88c6f08540e0bf2752fc5a2404167
-  RxCocoa: 477990dc3b4c3ff55fb0ac77e1cc06244e0aaec8
-  RxSwift: 74c29b693c8e42b0f64400e8b06564575742d649
+  RxCocoa: cbf70265dc65a981d4ac982e513c10cf23df24a0
+  RxSwift: f172070dfd1a93d70a9ab97a5a01166206e1c575
+  RxTheme: 40fdcdeba539402beface070d8472e8d0db78d66
   scrypt: 3fe5b1a3b0976f97cd87488673a8f7c65708cc84
   secp256k1_ios: ac9ef04e761f43c58012b28548afa91493761f17
   SipHash: fad90a4683e420c52ef28063063dbbce248ea6d4
 
-PODFILE CHECKSUM: 7c8099cacf6277aaec64243da7b19c53401c4bad
+PODFILE CHECKSUM: 5b3d2436fa22f5e874d1b03b6f570fef38acf42e
 
 COCOAPODS: 1.5.3
