@@ -32,13 +32,15 @@ class SettingTabViewController: UIViewController {
     
     func setupUI() {
         sviewModel.settingList.asDriver(onErrorJustReturn: ["error"])
-            .drive(tableView.rx.items(cellIdentifier: "cell2", cellType: SettingTabTableViewCell.self)) { (_, title, cell) in
+            .drive(tableView.rx.items(cellIdentifier: "cell2", cellType: SettingTabTableViewCell.self)) { (index, title, cell) in
                 cell.textLabel?.text = title
                 
-                if title != "Dark mode" {
-                    cell.switchButton.isHidden = true
-                } else {
+                switch index {
+                case 1:
+                    cell.isUserInteractionEnabled = false
                     cell.switchButton.isOn = UserDefaults.standard.bool(forKey: "darkmode")
+                default:
+                    cell.switchButton.isHidden = true
                 }
                 
                 let switched = cell.switchButton.rx.isOn.changed
@@ -66,20 +68,24 @@ class SettingTabViewController: UIViewController {
                 
         }.disposed(by: disposeBag)
         
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        var destinationVC: UIViewController? = segue.destination
+        tableView.rx.itemSelected
+            .subscribe(onNext: { [weak self] (indexPath) in
+                self?.tableView.deselectRow(at: indexPath, animated: true)
+                
+                switch indexPath.row {
+                case 0:
+                    let networkVC = UIStoryboard(name: "ChooseNetwork", bundle: nil).instantiateViewController(withIdentifier: "ChooseNetwork") as! ChooseNetworkViewController
+                    self?.navigationController?.pushViewController(networkVC.self, animated: true)
+                    self?.prepareNetworkListViewController(networkVC)
+                    
+                default:
+                    return
+                }
+            })
+            .disposed(by: disposeBag)
         
-        if let nvc = destinationVC as? UINavigationController {
-            destinationVC = nvc.viewControllers.first
-        }
-        
-        if let viewController = destinationVC as? ChooseNetworkViewController, segue.identifier == "showNetworkList" {
-            prepareNetworkListViewController(viewController)
-        }
     }
-    
+
     private func prepareNetworkListViewController(_ viewController: ChooseNetworkViewController) {
         
         let networkListViewModel = ChooseNetworkViewModel()
@@ -89,7 +95,6 @@ class SettingTabViewController: UIViewController {
             .disposed(by: disposeBag)
         
         viewController.viewModel = networkListViewModel
-        
     }
     
 

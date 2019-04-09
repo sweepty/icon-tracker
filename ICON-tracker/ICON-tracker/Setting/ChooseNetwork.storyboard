@@ -13,7 +13,7 @@
         <!--Choose Network View Controller-->
         <scene sceneID="XMq-qH-yWS">
             <objects>
-                <viewController storyboardIdentifier="ChooseNetwork" id="9y3-OI-G9V" customClass="ChooseNetworkViewController" customModule="ICON_tracker" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ChooseNetwork" useStoryboardIdentifierAsRestorationIdentifier="YES" id="9y3-OI-G9V" customClass="ChooseNetworkViewController" customModule="ICON_tracker" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="P0d-Bs-Zr6">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
