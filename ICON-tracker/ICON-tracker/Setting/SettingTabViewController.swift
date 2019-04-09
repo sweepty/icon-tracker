@@ -49,20 +49,17 @@ class SettingTabViewController: UIViewController {
                     .share()
                 
                 switched
-                    .subscribe({ (x) in
-                        UserDefaults.standard.set(x.element!, forKey: "darkmode")
-                        Log.Debug("스위치가 \(x.element!)로 바뀌었습니다.")
+                    .subscribe(onNext: { (value) in
+                        UserDefaults.standard.set(value, forKey: "darkmode")
+                        Log.Debug("스위치가 \(value)로 바뀌었습니다.")
                     })
                     .disposed(by: cell.cellBag)
                 
                 switched
-                    .subscribe({ (x) in
-                        if x.element! {
-                            themeService.switch(.dark)
-                        } else {
-                            themeService.switch(.light)
-                        }
-                    }).disposed(by: cell.cellBag)
+                    .subscribe(onNext: { (value) in
+                        value ? themeService.switch(.dark) : themeService.switch(.light)
+                    })
+                    .disposed(by: cell.cellBag)
                 
                 cell.theme.backgroundColor = themeService.attrStream { $0.backgroundColor }
                 

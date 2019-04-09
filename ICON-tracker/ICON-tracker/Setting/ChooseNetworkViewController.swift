@@ -41,10 +41,11 @@ class ChooseNetworkViewController: UIViewController {
         
         viewModel.didSelectNetwork
             .distinctUntilChanged()
-            .subscribe { (x) in
-                UserDefaults.standard.set(x.element!, forKey: "network")
+            .subscribe(onNext: { (network) in
+                UserDefaults.standard.set(network, forKey: "network")
                 Log.Error("유저 \(UserDefaults.standard.integer(forKey: "network")) 입니다")
-            }.disposed(by: disposeBag)
+            })
+            .disposed(by: disposeBag)
     }
     
     private func setUpBlockCell(_ cell: UITableViewCell, _ networks: Int) {
