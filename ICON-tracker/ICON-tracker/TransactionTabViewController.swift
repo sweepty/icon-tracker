@@ -25,15 +25,8 @@ class TransactionTabViewController: UIViewController {
     
     private let disposeBag = DisposeBag()
     
-    var viewModel: TransactionViewModel!
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        viewModel = TransactionViewModel()
-        
-        
         
         refreshControl.sendActions(for: .valueChanged)
         
@@ -42,13 +35,19 @@ class TransactionTabViewController: UIViewController {
     }
     
     func setupUI() {
+        
         totalSupplyLabel.isHidden = true
         usdPriceLabel.isHidden = true
         
         tableView.insertSubview(refreshControl, at: 0)
+        
     }
     
     func setupBindings() {
+        // theme        
+        view.theme.backgroundColor = themeService.attrStream { $0.backgroundColor }
+        tableView.theme.backgroundColor = themeService.attrStream { $0.backgroundColor }
+        
         segmentedControl.rx.value
             .bind(to: viewModel.segmentedValue)
             .disposed(by: disposeBag)
@@ -61,34 +60,35 @@ class TransactionTabViewController: UIViewController {
             .bind(to: navigationItem.rx.title)
             .disposed(by: disposeBag)
         
-        
-        // Subject(정확히 말하면 BehaviorRelay)는 Observer와 Observable 둘 다 될 수 있기 때문에 하나를 결정해야한다.
-        // segmentedValue가 변경되면 로그를 찍어주고 싶기 때문에 Observable로 변경한다.
-        // asObservable() = Subject(BehaviorRelay)를 Observable로 변경하는 메서드.
-        // Observable<Element>을 리턴한다.
         viewModel.segmentedValue.asObservable()
             .subscribe { (x) in
                 Log.Debug("UISegmentedControl value \(String(describing: x))")
             }.disposed(by: disposeBag)
         
         // Current USD Price
-        viewModel.currentPrice
+        let currentPriceObservable = viewModel.currentPrice
             .distinctUntilChanged()
+            .share()
+        
+        currentPriceObservable
             .bind(to: usdPriceLabel.rx.text)
             .disposed(by: disposeBag)
         
-        viewModel.currentPrice
+        currentPriceObservable
             .map { $0.isEmpty }
             .bind(to: usdPriceLabel.rx.isHidden)
             .disposed(by: disposeBag)
         
         // Total Supply
-        viewModel.icxSupply
+        let icxSupplyObservable = viewModel.icxSupply
             .distinctUntilChanged()
+            .share(replay: 1)
+        
+        icxSupplyObservable
             .bind(to: totalSupplyLabel.rx.text)
             .disposed(by: disposeBag)
         
-        viewModel.icxSupply
+        icxSupplyObservable
             .map { $0.isEmpty }
             .bind(to: totalSupplyLabel.rx.isHidden)
             .disposed(by: disposeBag)
@@ -99,6 +99,11 @@ class TransactionTabViewController: UIViewController {
             .do(onNext: { [weak self] _ in self?.refreshControl.endRefreshing() })
             .bind(to: tableView.rx.items(cellIdentifier: "cell", cellType: UITableViewCell.self)) { [weak self] (_, block, cell) in
                 self?.setUpBlockCell(cell, block)
+                
+                cell.theme.backgroundColor = themeService.attrStream { $0.backgroundColor }
+                cell.textLabel?.theme.textColor = themeService.attrStream { $0.textColor }
+                cell.detailTextLabel?.theme.textColor = themeService.attrStream { $0.textColor }
+                
             }.disposed(by: disposeBag)
         
         refreshControl.rx.controlEvent(.valueChanged)
@@ -111,32 +116,6 @@ class TransactionTabViewController: UIViewController {
         cell.textLabel?.text = "\(blocks.height)"
         cell.detailTextLabel?.text = "\(blocks.txCount)"
     }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        var destinationVC: UIViewController? = segue.destination
-
-        if let nvc = destinationVC as? UINavigationController {
-            destinationVC = nvc.viewControllers.first
-        }
-
-        if let viewController = destinationVC as? ChooseNetworkViewController {
-            prepareLanguageListViewController(viewController)
-        }
-        
-    }
-    
-    /// Setups `LanguageListViewController` befor navigation.
-    ///
-    /// - Parameter viewController: `LanguageListViewController` to prepare.
-    private func prepareLanguageListViewController(_ viewController: ChooseNetworkViewController) {
-        let networkListViewModel = ChooseNetworkViewModel()
-        
-        networkListViewModel.didSelectNetwork
-            .bind(to: viewModel.setCurrentNetwork)
-            .disposed(by: disposeBag)
-        
-        viewController.viewModel = networkListViewModel
-    }
 
     /*
     // MARK: - Navigation
@@ -148,3 +127,27 @@ class TransactionTabViewController: UIViewController {
     }
     */
 }
+
+extension UIScrollView {
+    func isNearBottomEdge(edgeOffset: CGFloat = 20.0) -> Bool {
+        return self.contentOffset.y + self.frame.size.height + edgeOffset > self.contentSize.height
+    }
+}
+
+//extension TransactionTabViewController: UITableViewDataSourcePrefetching {
+//    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+//        print("프리패칭!!\(indexPaths)")
+//        
+//        indexPaths.forEach {
+//            print($0.row)
+//            if $0.row % 24 == 0 {
+//                Log.Info("24의 배수ㅎㅅㅎ")
+//                let page: Int = $0.row / 25
+//                let pageOb: Observable<Int> = Observable.just(page)
+//                pageOb
+//                    .bind(to: viewModel.pageNums)
+//                    .disposed(by: disposeBag)
+//            }
+//        }
+//    }
+//}
