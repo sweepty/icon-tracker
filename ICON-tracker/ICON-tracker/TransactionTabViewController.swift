@@ -41,6 +41,24 @@ class TransactionTabViewController: UIViewController {
         
         tableView.insertSubview(refreshControl, at: 0)
         
+//        tableView.rx.prefetchDataSource.self
+//        
+//        tableView.rx.prefetchRows
+//            .subscribe(onNext: { (indexPath) in
+//                if indexPath.first!.row % 24 == 0 {
+//                    Log.Info("24의 배수ㅎㅅㅎ")
+//                    let page: Int = indexPath.first!.row / 24
+//                    let pageOb: Observable<Int> = Observable.just(page)
+//                    pageOb
+//                        .bind(to: viewModel.pageNums)
+//                        .disposed(by: self.disposeBag)
+//                    
+//                    viewModel.blockItems.asObservable()
+//                        
+//                }
+//            })
+//            .disposed(by: disposeBag)
+        
     }
     
     func setupBindings() {
@@ -68,43 +86,40 @@ class TransactionTabViewController: UIViewController {
         // Current USD Price
         let currentPriceObservable = viewModel.currentPrice
             .distinctUntilChanged()
-            .share()
         
         currentPriceObservable
-            .bind(to: usdPriceLabel.rx.text)
+            .drive(usdPriceLabel.rx.text)
             .disposed(by: disposeBag)
         
         currentPriceObservable
             .map { $0.isEmpty }
-            .bind(to: usdPriceLabel.rx.isHidden)
+            .drive(usdPriceLabel.rx.isHidden)
             .disposed(by: disposeBag)
         
         // Total Supply
         let icxSupplyObservable = viewModel.icxSupply
             .distinctUntilChanged()
-            .share(replay: 1)
         
         icxSupplyObservable
-            .bind(to: totalSupplyLabel.rx.text)
+            .drive(totalSupplyLabel.rx.text)
             .disposed(by: disposeBag)
         
         icxSupplyObservable
             .map { $0.isEmpty }
-            .bind(to: totalSupplyLabel.rx.isHidden)
+            .drive(totalSupplyLabel.rx.isHidden)
             .disposed(by: disposeBag)
         
         // TableView
         viewModel.blockItems
-            .observeOn(MainScheduler.instance)
             .do(onNext: { [weak self] _ in self?.refreshControl.endRefreshing() })
-            .bind(to: tableView.rx.items(cellIdentifier: "cell", cellType: UITableViewCell.self)) { [weak self] (_, block, cell) in
+            .drive(tableView.rx.items(cellIdentifier: "cell", cellType: UITableViewCell.self)) { [weak self] (_, block, cell) in
                 self?.setUpBlockCell(cell, block)
                 
                 cell.theme.backgroundColor = themeService.attrStream { $0.backgroundColor }
                 cell.textLabel?.theme.textColor = themeService.attrStream { $0.textColor }
                 cell.detailTextLabel?.theme.textColor = themeService.attrStream { $0.textColor }
-                
-            }.disposed(by: disposeBag)
+            }
+            .disposed(by: disposeBag)
         
         refreshControl.rx.controlEvent(.valueChanged)
             .bind(to: viewModel.reload)
@@ -133,21 +148,3 @@ extension UIScrollView {
         return self.contentOffset.y + self.frame.size.height + edgeOffset > self.contentSize.height
     }
 }
-
-//extension TransactionTabViewController: UITableViewDataSourcePrefetching {
-//    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-//        print("프리패칭!!\(indexPaths)")
-//        
-//        indexPaths.forEach {
-//            print($0.row)
-//            if $0.row % 24 == 0 {
-//                Log.Info("24의 배수ㅎㅅㅎ")
-//                let page: Int = $0.row / 25
-//                let pageOb: Observable<Int> = Observable.just(page)
-//                pageOb
-//                    .bind(to: viewModel.pageNums)
-//                    .disposed(by: disposeBag)
-//            }
-//        }
-//    }
-//}

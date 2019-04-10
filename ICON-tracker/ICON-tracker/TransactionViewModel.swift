@@ -27,11 +27,11 @@ public class TransactionViewModel {
     
     let reload: AnyObserver<Void>
     
-    let currentPrice: Observable<String>
+    let currentPrice: Driver<String>
     
-    let icxSupply: Observable<String>
+    let icxSupply: Driver<String>
     
-    let blockItems: Observable<[Block]>
+    let blockItems: Driver<[Block]>
     
     init(trackerService: TrackerService = TrackerService(), iconService: Requests = Requests()) {
         let _reload = BehaviorSubject<Void>(value: ())
@@ -58,21 +58,22 @@ public class TransactionViewModel {
         self.currentPrice = Observable.combineLatest( _reload, _currentNetwork ) { _, network in network }
             .flatMapLatest { network in
                 trackerService.getCurrentExchange(network: network)
-        }
+            }.asDriver(onErrorJustReturn: "error")
         
         self.icxSupply = Observable.combineLatest( _reload, _currentNetwork ) { _, network in network }
             .flatMapLatest { network in
                 iconService.getTotalSupply(network: network)
-            }
+            }.asDriver(onErrorJustReturn: "error")
         
         let _pageNums = BehaviorSubject<Int>(value: 1)
         self.pageNums = _pageNums.asObserver()
         
+        let background = ConcurrentDispatchQueueScheduler.init(queue: DispatchQueue.global())
         self.blockItems = Observable.combineLatest( _reload, _currentNetwork, _pageNums )
-//        { _, network, page in network, page }
+            .observeOn(background)
             .flatMapLatest { _, network, page in
                 trackerService.getBlockList(network: network, page: page)
-        }
+        }.asDriver(onErrorJustReturn: [Block]())
     }
 }
 
