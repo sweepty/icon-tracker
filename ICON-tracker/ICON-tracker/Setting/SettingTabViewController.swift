@@ -24,8 +24,6 @@ class SettingTabViewController: UIViewController {
         
         setupUI()
         
-        // Bind stream to a single attribute
-        // In the way, RxTheme would automatically manage the lifecycle of the binded stream
         view.theme.backgroundColor = themeService.attrStream { $0.backgroundColor }
         tableView.theme.backgroundColor = themeService.attrStream { $0.backgroundColor }
     }
@@ -37,7 +35,7 @@ class SettingTabViewController: UIViewController {
                 
                 switch index {
                 case 1:
-                    cell.isUserInteractionEnabled = false
+                    cell.selectionStyle = .none
                     cell.switchButton.isOn = UserDefaults.standard.bool(forKey: "darkmode")
                 default:
                     cell.switchButton.isHidden = true
@@ -51,13 +49,8 @@ class SettingTabViewController: UIViewController {
                 switched
                     .subscribe(onNext: { (value) in
                         UserDefaults.standard.set(value, forKey: "darkmode")
-                        Log.Debug("스위치가 \(value)로 바뀌었습니다.")
-                    })
-                    .disposed(by: cell.cellBag)
-                
-                switched
-                    .subscribe(onNext: { (value) in
                         value ? themeService.switch(.dark) : themeService.switch(.light)
+                        Log.Debug("스위치가 \(value)로 바뀌었습니다.")
                     })
                     .disposed(by: cell.cellBag)
                 
