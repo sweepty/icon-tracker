@@ -41,24 +41,6 @@ class TransactionTabViewController: UIViewController {
         
         tableView.insertSubview(refreshControl, at: 0)
         
-//        tableView.rx.prefetchDataSource.self
-//        
-//        tableView.rx.prefetchRows
-//            .subscribe(onNext: { (indexPath) in
-//                if indexPath.first!.row % 24 == 0 {
-//                    Log.Info("24의 배수ㅎㅅㅎ")
-//                    let page: Int = indexPath.first!.row / 24
-//                    let pageOb: Observable<Int> = Observable.just(page)
-//                    pageOb
-//                        .bind(to: viewModel.pageNums)
-//                        .disposed(by: self.disposeBag)
-//                    
-//                    viewModel.blockItems.asObservable()
-//                        
-//                }
-//            })
-//            .disposed(by: disposeBag)
-        
     }
     
     func setupBindings() {
@@ -75,7 +57,7 @@ class TransactionTabViewController: UIViewController {
             .disposed(by: disposeBag)
         
         viewModel.title
-            .bind(to: navigationItem.rx.title)
+            .drive(navigationItem.rx.title)
             .disposed(by: disposeBag)
         
         viewModel.segmentedValue.asObservable()
@@ -111,8 +93,9 @@ class TransactionTabViewController: UIViewController {
         
         // TableView
         viewModel.blockItems
+            .observeOn(MainScheduler.instance)
             .do(onNext: { [weak self] _ in self?.refreshControl.endRefreshing() })
-            .drive(tableView.rx.items(cellIdentifier: "cell", cellType: UITableViewCell.self)) { [weak self] (_, block, cell) in
+            .bind(to: tableView.rx.items(cellIdentifier: "cell", cellType: UITableViewCell.self)) { [weak self] (_, block, cell) in
                 self?.setUpBlockCell(cell, block)
                 
                 cell.theme.backgroundColor = themeService.attrStream { $0.backgroundColor }
@@ -123,6 +106,11 @@ class TransactionTabViewController: UIViewController {
         
         refreshControl.rx.controlEvent(.valueChanged)
             .bind(to: viewModel.reload)
+            .disposed(by: disposeBag)
+        
+        tableView.reachedBottom
+            .map { _ in () }
+            .bind(to: viewModel.nextPageTrigger)
             .disposed(by: disposeBag)
     }
     
@@ -144,7 +132,18 @@ class TransactionTabViewController: UIViewController {
 }
 
 extension UIScrollView {
-    func isNearBottomEdge(edgeOffset: CGFloat = 20.0) -> Bool {
-        return self.contentOffset.y + self.frame.size.height + edgeOffset > self.contentSize.height
+    var reachedBottom: Observable<Void> {
+        return rx.contentOffset
+            .flatMap { [weak self] contentOffset -> Observable<Void> in
+                guard let scrollView = self else {
+                    return Observable.empty()
+                }
+                
+                let visibleHeight = scrollView.frame.height - scrollView.contentInset.top - scrollView.contentInset.bottom
+                let y = contentOffset.y + scrollView.contentInset.top
+                let threshold = max(0.0, scrollView.contentSize.height - visibleHeight)
+                
+                return y > threshold ? Observable.just(()) : Observable.empty()
+        }
     }
 }

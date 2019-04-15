@@ -11,38 +11,41 @@ import RxSwift
 import RxCocoa
 
 public class TransactionViewModel {
-    // BehaviorRelay는 BehaviorSubject의 wrapper로써 RxSwift 4.0에서 deprecated된 Variable와 개념이 동일하다.
-    // 즉, onNext만 사용가능하고, 할당이 해제되면 자동으로 onCompleted() 이벤트를 보낸다. (maybe)
-    // error나 completed로 종료되지 않는다.
-    // BehaviorSubject는 Subject에 의해 반환된 가장 최근 값과 구독 이후 반환한 값을 가져오기 때문에
-    // 앱을 빌드하면 SegementedControl의 값을 변환하지 않았어도 기본값인 0이 있기 때문에 아래처럼 바로 로그가 찍히는 것이다.
-    // UISegmentedControl value next(0)
+    
     let segmentedValue = BehaviorRelay(value: 0)
     
-    let pageNums: AnyObserver<Int>
-    
-    var title: Observable<String>
+    let title: Driver<String>
     
     let setCurrentNetwork: AnyObserver<Int>
     
-    let reload: AnyObserver<Void>
+    let reload = BehaviorSubject<Void>(value: ())
     
     let currentPrice: Driver<String>
     
     let icxSupply: Driver<String>
     
-    let blockItems: Driver<[Block]>
+    let blockItems: BehaviorRelay<[Block]> = BehaviorRelay<[Block]>(value: [])
+    
+    let nextPageTrigger: PublishSubject<Void>
+    
+    let isLoading = BehaviorSubject<Bool>(value: false)
+    
+    let error = PublishSubject<Swift.Error>()
+    
+    private var pageCount: Int = 1
+    
+    var isEnd: Bool = false
+    
+    let disposeBag = DisposeBag()
     
     init(trackerService: TrackerService = TrackerService(), iconService: Requests = Requests()) {
-        let _reload = BehaviorSubject<Void>(value: ())
-        self.reload = _reload.asObserver()
         
         let userDefaultsNetwork = UserDefaults.standard.integer(forKey: "network")
         let _currentNetwork = BehaviorSubject<Int>(value: userDefaultsNetwork)
         
         self.setCurrentNetwork = _currentNetwork.asObserver()
         
-        self.title = _currentNetwork.asObservable().map {
+        self.title = _currentNetwork.asDriver(onErrorJustReturn: 0).map {
             switch $0 {
             case 0:
                 return "Mainnet"
@@ -55,25 +58,76 @@ public class TransactionViewModel {
             }
         }
         
-        self.currentPrice = Observable.combineLatest( _reload, _currentNetwork ) { _, network in network }
+        self.currentPrice = Observable.combineLatest( self.reload, _currentNetwork ) { _, network in network }
             .flatMapLatest { network in
                 trackerService.getCurrentExchange(network: network)
             }.asDriver(onErrorJustReturn: "error")
         
-        self.icxSupply = Observable.combineLatest( _reload, _currentNetwork ) { _, network in network }
+        self.icxSupply = Observable.combineLatest( self.reload, _currentNetwork ) { _, network in network }
             .flatMapLatest { network in
                 iconService.getTotalSupply(network: network)
             }.asDriver(onErrorJustReturn: "error")
         
-        let _pageNums = BehaviorSubject<Int>(value: 1)
-        self.pageNums = _pageNums.asObserver()
+        self.nextPageTrigger = PublishSubject<Void>()
         
-        let background = ConcurrentDispatchQueueScheduler.init(queue: DispatchQueue.global())
-        self.blockItems = Observable.combineLatest( _reload, _currentNetwork, _pageNums )
-            .observeOn(background)
-            .flatMapLatest { _, network, page in
-                trackerService.getBlockList(network: network, page: page)
-        }.asDriver(onErrorJustReturn: [Block]())
+        let loadingObservable = self.isLoading.share(replay: 1)
+        
+        let refreshRequest = loadingObservable.asObservable()
+            .sample(reload)
+            .flatMap { loading -> Observable<Int> in
+                if loading || self.isEnd {
+                    return Observable.empty()
+                } else {
+                    return Observable<Int>.create { observer in
+                        self.pageCount = 1
+                        print("첫번째 리로드")
+                        observer.onNext(1)
+                        observer.onCompleted()
+                        return Disposables.create()
+                    }
+                }
+            }
+        
+        let nextPageRequest = loadingObservable.asObservable()
+            .sample(nextPageTrigger)
+            .flatMap { loading -> Observable<Int> in
+                if loading {
+                    return Observable.empty()
+                } else {
+                    return Observable<Int>.create { [unowned self] observer in
+                        self.pageCount += 1
+                        print(self.pageCount)
+                        observer.onNext(self.pageCount)
+                        observer.onCompleted()
+                        return Disposables.create()
+                    }
+                }
+            }
+        
+        let request = Observable.merge(refreshRequest, nextPageRequest)
+            .share(replay: 1)
+        
+        let response = request.flatMapLatest { page in
+                trackerService.getBlockList(network: userDefaultsNetwork, page: page)
+            }
+            .share(replay: 1)
+        
+        Observable
+            .combineLatest(reload.asObservable(), request, response, blockItems.asObservable()) { _, request, response, blocks in
+                self.isEnd = response.count < 30
+                
+                return self.pageCount == 1 ? response : blocks + response
+            }
+            .sample(response)
+            .bind(to: blockItems)
+            .disposed(by: disposeBag)
+        
+        Observable
+            .merge(request.map{ _ in true },
+                   response.map { _ in false },
+                   error.map { _ in false })
+            .bind(to: isLoading)
+            .disposed(by: disposeBag)
     }
 }
 
