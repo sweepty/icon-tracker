@@ -13,8 +13,8 @@ import RxSwift
 import RxCocoa
 
 class ICON {
-    func getNetworklist() -> Observable<[Int]> {
-        return Observable.just([0, 1 ,2])
+    func getNetworklist() -> Driver<[Int]> {
+        return Observable.just([0, 1 ,2]).asDriver(onErrorJustReturn: [])
     }
 }
 
@@ -75,7 +75,7 @@ class TrackerRequests {
     }
     
     func createRequest() -> URLRequest {
-        var url = provider.appendingPathComponent(self.method == .getCurrentExchangeList ? "v0" : "v3")
+        var url = provider.appendingPathComponent(self.method == .getCurrentExchangeList || self.method == .getChartData ? "v0" : "v3")
         url = url.appendingPathComponent(method.rawValue)
         
         var urlComponent = URLComponents(string: url.absoluteString)
@@ -108,7 +108,7 @@ class TrackerService {
         return session.rx.data(request: request.createRequest())
             .flatMap({ (value) -> Observable<String> in
                 
-                let decoded = try decoder.decode(ExchangeResponse.self, from: value)
+                let decoded = try decoder.decode(TrackerResponse<ExchangeInfo>.self, from: value)
                 let price = decoded.data.first?.price
                 
                 guard let usdPrice = price, let tmp = Double(usdPrice) else {
@@ -121,9 +121,37 @@ class TrackerService {
             })
     }
     
+    func getChartData(network: Int) -> [ChartInfo] {
+        var chartData = [ChartInfo]()
+        let semaphore = DispatchSemaphore(value: 0)
+
+        let request = TrackerRequests(network: network, method: .getChartData, params: [:])
+
+        session.dataTask(with: request.createRequest()) { (data, response, error) in
+            guard error == nil && data != nil else {
+                Log.Error(ICONTrackerError.network)
+                return
+            }
+
+            if let data = data, let response = response as? HTTPURLResponse, response.statusCode == 200 {
+                do {
+                    let decoded = try decoder.decode(TrackerResponse<ChartInfo>.self, from: data)
+                    chartData = decoded.data
+                    semaphore.signal()
+                } catch {
+                    Log.Error(ICONTrackerError.parsing)
+                    return
+                }
+            }
+
+        }.resume()
+        semaphore.wait()
+        return chartData
+    }
+    
     func getBlockList(network: Int, page: Int) -> Observable<[Block]> {
         let request = TrackerRequests(network: network, method: .getBlockList, params: ["page": page, "count": 25])
-        
+        Log.Error("블락 받아옴")
         return session.rx.data(request: request.createRequest())
             .flatMap({ (value) -> Observable<[Block]> in
                 

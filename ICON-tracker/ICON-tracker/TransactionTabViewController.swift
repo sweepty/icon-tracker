@@ -10,8 +10,9 @@ import UIKit
 import RxSwift
 import RxCocoa
 import BigInt
+import Charts
 
-class TransactionTabViewController: UIViewController {
+class TransactionTabViewController: UIViewController, ChartViewDelegate {
 
     @IBOutlet weak var chooseNetworkButton: UIBarButtonItem!
     @IBOutlet weak var usdPriceLabel: UILabel!
@@ -23,6 +24,10 @@ class TransactionTabViewController: UIViewController {
     
     private let refreshControl = UIRefreshControl()
     
+    @IBOutlet weak var lineChartView: LineChartView!
+    
+    var chartInfoResponse = [ChartInfo]()
+    
     private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
@@ -32,21 +37,75 @@ class TransactionTabViewController: UIViewController {
         
         setupUI()
         setupBindings()
+        
+        setupChartView()
+        setupChartData()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.lineChartView.animate(xAxisDuration: 1.0, yAxisDuration: 1.0)
+    }
+    
+    func setupChartView() {
+        // chartView
+        lineChartView.delegate = self
+        lineChartView.pinchZoomEnabled = false
+        lineChartView.setScaleEnabled(false)
+        
+        lineChartView.xAxis.labelPosition = .bottom
+        lineChartView.xAxis.labelTextColor = .white
+        lineChartView.leftAxis.labelTextColor = .white
+        lineChartView.rightAxis.enabled = false
+        
+    }
+    
+    func setupChartData() {
+        var values = [ChartDataEntry]()
+        
+        for i in 0..<chartInfoResponse.count {
+            values.append(ChartDataEntry(x: Double(i), y: chartInfoResponse[i].txCount))
+        }
+        
+        let set1 = LineChartDataSet(values: values, label: "Set 1")
+        
+        set1.drawIconsEnabled = false
+        set1.setColor(.white)
+        set1.setCircleColor(.white)
+        set1.lineWidth = 1
+        set1.circleRadius = 3
+        set1.valueFont = .systemFont(ofSize: 9)
+        set1.valueTextColor = .white
+        set1.formLineWidth = 1
+        set1.formSize = 15
+        
+        let data = LineChartData(dataSet: set1)
+        
+        lineChartView.data = data
     }
     
     func setupUI() {
-        
         totalSupplyLabel.isHidden = true
         usdPriceLabel.isHidden = true
         
         tableView.insertSubview(refreshControl, at: 0)
-        
     }
     
     func setupBindings() {
         // theme        
         view.theme.backgroundColor = themeService.attrStream { $0.backgroundColor }
         tableView.theme.backgroundColor = themeService.attrStream { $0.backgroundColor }
+        
+        viewModel.values.asObservable()
+            .subscribe(onNext: { (x) in
+                // 차트 데이터 변경
+                Log.Verbose("차트 데이터 변경함")
+                self.lineChartView.data = nil
+                self.chartInfoResponse = x
+                self.setupChartData()
+                // viewwillappear에서도 하는데 reload 때문에 여기서도 해주면 낭비아닐까?
+//                self.lineChartView.animate(xAxisDuration: 3.0, yAxisDuration: 3.0)
+                
+            }).disposed(by: disposeBag)
         
         segmentedControl.rx.value
             .bind(to: viewModel.segmentedValue)

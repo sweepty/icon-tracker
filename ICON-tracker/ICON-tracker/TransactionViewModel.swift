@@ -9,6 +9,7 @@
 import Foundation
 import RxSwift
 import RxCocoa
+import Charts
 
 public class TransactionViewModel {
     
@@ -16,7 +17,7 @@ public class TransactionViewModel {
     
     let title: Driver<String>
     
-    let setCurrentNetwork: AnyObserver<Int>
+    let setCurrentNetwork: BehaviorSubject<Int>
     
     let reload = BehaviorSubject<Void>(value: ())
     
@@ -34,18 +35,32 @@ public class TransactionViewModel {
     
     private var pageCount: Int = 1
     
-    var isEnd: Bool = false
+    let values: BehaviorRelay<[ChartInfo]>
     
     let disposeBag = DisposeBag()
     
     init(trackerService: TrackerService = TrackerService(), iconService: Requests = Requests()) {
         
         let userDefaultsNetwork = UserDefaults.standard.integer(forKey: "network")
-        let _currentNetwork = BehaviorSubject<Int>(value: userDefaultsNetwork)
         
-        self.setCurrentNetwork = _currentNetwork.asObserver()
+        self.setCurrentNetwork = BehaviorSubject<Int>(value: userDefaultsNetwork)
         
-        self.title = _currentNetwork.asDriver(onErrorJustReturn: 0).map {
+        self.values = BehaviorRelay<[ChartInfo]>(value: trackerService.getChartData(network: userDefaultsNetwork))
+        
+//        setCurrentNetwork.asObservable()
+//            .flatMap { network in
+//                Observable.just(trackerService.getChartData(network: network))
+//        }
+//        .bind(to: values)
+//        .disposed(by: disposeBag)
+        Observable.combineLatest(self.reload, self.setCurrentNetwork) { _, network in network }
+            .flatMapLatest { network in
+                return Observable.just(trackerService.getChartData(network: network))
+            }
+            .bind(to: values)
+            .disposed(by: disposeBag)
+        
+        self.title = setCurrentNetwork.asDriver(onErrorJustReturn: 0).map {
             switch $0 {
             case 0:
                 return "Mainnet"
@@ -58,12 +73,12 @@ public class TransactionViewModel {
             }
         }
         
-        self.currentPrice = Observable.combineLatest( self.reload, _currentNetwork ) { _, network in network }
+        self.currentPrice = Observable.combineLatest( self.reload, setCurrentNetwork.asObservable() ) { _, network in network }
             .flatMapLatest { network in
                 trackerService.getCurrentExchange(network: network)
             }.asDriver(onErrorJustReturn: "error")
         
-        self.icxSupply = Observable.combineLatest( self.reload, _currentNetwork ) { _, network in network }
+        self.icxSupply = Observable.combineLatest( self.reload, setCurrentNetwork.asObservable() ) { _, network in network }
             .flatMapLatest { network in
                 iconService.getTotalSupply(network: network)
             }.asDriver(onErrorJustReturn: "error")
@@ -88,7 +103,7 @@ public class TransactionViewModel {
             }
         
         let changeNetworkRequest = loadingObservable.asObservable()
-            .sample(_currentNetwork)
+            .sample(setCurrentNetwork)
             .flatMap { loading -> Observable<Int> in
                 if loading {
                     return Observable.empty()
@@ -121,14 +136,13 @@ public class TransactionViewModel {
         let request = Observable.merge(refreshRequest, nextPageRequest, changeNetworkRequest)
             .share(replay: 1)
         
-        let response = Observable.combineLatest(request, _currentNetwork)
+        let response = Observable.combineLatest(request, setCurrentNetwork.asObservable())
             .flatMapLatest { page, network in
                 trackerService.getBlockList(network: network, page: page)
             }.share(replay: 1)
         
         Observable
             .combineLatest(reload.asObservable(), request, response, blockItems.asObservable()) { _, request, response, blocks in
-                self.isEnd = response.count < 30
                 return self.pageCount == 1 ? response : blocks + response
             }
             .sample(response)

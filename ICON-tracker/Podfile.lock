@@ -1,6 +1,9 @@
 PODS:
   - BigInt (3.1.0):
     - SipHash (~> 1.2)
+  - Charts (3.2.2):
+    - Charts/Core (= 3.2.2)
+  - Charts/Core (3.2.2)
   - CryptoSwift (0.11.0)
   - ICONKit (0.3.1):
     - BigInt
@@ -22,6 +25,7 @@ PODS:
 
 DEPENDENCIES:
   - BigInt
+  - Charts
   - ICONKit (~> 0.3.0)
   - RxCocoa (~> 4.0)
   - RxSwift (~> 4.0)
@@ -30,6 +34,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - BigInt
+    - Charts
     - CryptoSwift
     - ICONKit
     - Result
@@ -42,6 +47,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   BigInt: 76b5dfdfa3e2e478d4ffdf161aeede5502e2742f
+  Charts: f69cf0518b6d1d62608ca504248f1bbe0b6ae77e
   CryptoSwift: ad5208dd2aae0a764ea4ce2c2d34bd067cae67f0
   ICONKit: 1e73834efe4a73f0e9574688b7b17b098948da33
   Result: bd966fac789cc6c1563440b348ab2598cc24d5c7
@@ -52,6 +58,6 @@ SPEC CHECKSUMS:
   secp256k1_ios: ac9ef04e761f43c58012b28548afa91493761f17
   SipHash: fad90a4683e420c52ef28063063dbbce248ea6d4
 
-PODFILE CHECKSUM: 5b3d2436fa22f5e874d1b03b6f570fef38acf42e
+PODFILE CHECKSUM: eb665cdb1ba0fb994e68419418b2f25b02be0768
 
 COCOAPODS: 1.5.3

@@ -9,6 +9,7 @@
 import Foundation
 
 enum ICONTrackerError: Error {
+    case network
     case parsing
     case unknown
 }
@@ -18,6 +19,8 @@ extension ICONTrackerError {
         switch self {
         case .parsing:
             return "🔥Parsing ERROR"
+        case .network:
+            return "⛔️Network ERROR"
         default:
             return "🤔 Unknwon ERROR"
         }

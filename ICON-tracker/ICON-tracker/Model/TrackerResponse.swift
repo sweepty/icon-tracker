@@ -8,18 +8,22 @@
 
 import Foundation
 
-struct ExchangeResponse: Decodable {
+struct TrackerResponse<T: Decodable>: Decodable {
     var result: String
     var description: String
-    var data: [DataInfo]
-    
-    struct DataInfo: Decodable {
-        var marketName: String
-        var tradeName: String
-        var createDate: String
-        var price: String
-        var prePrice: String
-        var dailyRate: String
-    }
+    var data: [T]
 }
 
+struct ChartInfo: Decodable {
+    var targetDate: String
+    var txCount: Double
+}
+
+struct ExchangeInfo: Decodable {
+    var marketName: String
+    var tradeName: String
+    var createDate: String
+    var price: String
+    var prePrice: String
+    var dailyRate: String
+}
