@@ -75,12 +75,26 @@ public class TransactionViewModel {
         let refreshRequest = loadingObservable.asObservable()
             .sample(reload)
             .flatMap { loading -> Observable<Int> in
-                if loading || self.isEnd {
+                if loading {
                     return Observable.empty()
                 } else {
                     return Observable<Int>.create { observer in
                         self.pageCount = 1
-                        print("첫번째 리로드")
+                        observer.onNext(1)
+                        observer.onCompleted()
+                        return Disposables.create()
+                    }
+                }
+            }
+        
+        let changeNetworkRequest = loadingObservable.asObservable()
+            .sample(_currentNetwork)
+            .flatMap { loading -> Observable<Int> in
+                if loading {
+                    return Observable.empty()
+                } else {
+                    return Observable<Int>.create { observer in
+                        self.pageCount = 1
                         observer.onNext(1)
                         observer.onCompleted()
                         return Disposables.create()
@@ -104,18 +118,17 @@ public class TransactionViewModel {
                 }
             }
         
-        let request = Observable.merge(refreshRequest, nextPageRequest)
+        let request = Observable.merge(refreshRequest, nextPageRequest, changeNetworkRequest)
             .share(replay: 1)
         
-        let response = request.flatMapLatest { page in
-                trackerService.getBlockList(network: userDefaultsNetwork, page: page)
-            }
-            .share(replay: 1)
+        let response = Observable.combineLatest(request, _currentNetwork)
+            .flatMapLatest { page, network in
+                trackerService.getBlockList(network: network, page: page)
+            }.share(replay: 1)
         
         Observable
             .combineLatest(reload.asObservable(), request, response, blockItems.asObservable()) { _, request, response, blocks in
                 self.isEnd = response.count < 30
-                
                 return self.pageCount == 1 ? response : blocks + response
             }
             .sample(response)
