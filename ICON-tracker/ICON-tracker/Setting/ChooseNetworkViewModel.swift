@@ -15,7 +15,7 @@ class ChooseNetworkViewModel {
     let selectNetwork: AnyObserver<Int>
     
     // outputs
-    let networks: Observable<[Int]>
+    let networks: Driver<[Int]>
     let didSelectNetwork: Observable<Int>
     
     init(icon: ICON = ICON()) {

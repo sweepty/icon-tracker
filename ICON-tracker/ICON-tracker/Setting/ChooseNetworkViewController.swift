@@ -31,11 +31,12 @@ class ChooseNetworkViewController: UIViewController {
     
     func setupUI() {
         viewModel.networks
-            .bind(to: tableView.rx.items(cellIdentifier: "cell", cellType: UITableViewCell.self)) { [weak self] (_, network, cell) in
+            .drive(tableView.rx.items(cellIdentifier: "cell", cellType: UITableViewCell.self)) { [weak self] (_, network, cell) in
                 self?.setUpBlockCell(cell, network)
         }.disposed(by: disposeBag)
         
         tableView.rx.modelSelected(Int.self)
+            .distinctUntilChanged()
             .bind(to: viewModel.selectNetwork)
             .disposed(by: disposeBag)
         
