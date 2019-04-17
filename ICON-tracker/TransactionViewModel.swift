@@ -21,19 +21,29 @@ public class TransactionViewModel {
     
     let reload = BehaviorSubject<Void>(value: ())
     
+    let tReload = BehaviorSubject<Void>(value: ())
+    
     let currentPrice: Driver<String>
     
     let icxSupply: Driver<String>
     
     let blockItems: BehaviorRelay<[Block]> = BehaviorRelay<[Block]>(value: [])
     
+    let transactionItems: BehaviorRelay<[TransactionBlock]> = BehaviorRelay<[TransactionBlock]>(value: [])
+    
     let nextPageTrigger: PublishSubject<Void>
     
+    let tNextPageTrigger: PublishSubject<Void>
+    
     let isLoading = BehaviorSubject<Bool>(value: false)
+    
+    let tisLoading = BehaviorSubject<Bool>(value: false)
     
     let error = PublishSubject<Swift.Error>()
     
     private var pageCount: Int = 1
+    
+    private var tPageCount: Int = 1
     
     let values: BehaviorRelay<[ChartInfo]>
     
@@ -47,12 +57,6 @@ public class TransactionViewModel {
         
         self.values = BehaviorRelay<[ChartInfo]>(value: trackerService.getChartData(network: userDefaultsNetwork))
         
-//        setCurrentNetwork.asObservable()
-//            .flatMap { network in
-//                Observable.just(trackerService.getChartData(network: network))
-//        }
-//        .bind(to: values)
-//        .disposed(by: disposeBag)
         Observable.combineLatest(self.reload, self.setCurrentNetwork) { _, network in network }
             .flatMapLatest { network in
                 return Observable.just(trackerService.getChartData(network: network))
@@ -85,6 +89,8 @@ public class TransactionViewModel {
         
         self.nextPageTrigger = PublishSubject<Void>()
         
+        self.tNextPageTrigger = PublishSubject<Void>()
+        
         let loadingObservable = self.isLoading.share(replay: 1)
         
         let refreshRequest = loadingObservable.asObservable()
@@ -100,7 +106,7 @@ public class TransactionViewModel {
                         return Disposables.create()
                     }
                 }
-            }
+        }
         
         let changeNetworkRequest = loadingObservable.asObservable()
             .sample(setCurrentNetwork)
@@ -115,7 +121,7 @@ public class TransactionViewModel {
                         return Disposables.create()
                     }
                 }
-            }
+        }
         
         let nextPageRequest = loadingObservable.asObservable()
             .sample(nextPageTrigger)
@@ -131,7 +137,7 @@ public class TransactionViewModel {
                         return Disposables.create()
                     }
                 }
-            }
+        }
         
         let request = Observable.merge(refreshRequest, nextPageRequest, changeNetworkRequest)
             .share(replay: 1)
@@ -155,6 +161,80 @@ public class TransactionViewModel {
                    error.map { _ in false })
             .bind(to: isLoading)
             .disposed(by: disposeBag)
+        
+        // ----------------- transactions -----------------
+        let tloadingObservable = self.tisLoading.share(replay: 1)
+        
+        let transactionRefreshRequest = tloadingObservable.asObservable()
+            .sample(tReload)
+            .flatMap { loading -> Observable<Int> in
+                if loading {
+                    return Observable.empty()
+                } else {
+                    return Observable<Int>.create { observer in
+                        self.tPageCount = 1
+                        observer.onNext(1)
+                        observer.onCompleted()
+                        return Disposables.create()
+                    }
+                }
+        }
+        
+        let transactionChangeNetworkRequest = tloadingObservable.asObservable()
+            .sample(setCurrentNetwork)
+            .flatMap { loading -> Observable<Int> in
+                if loading {
+                    return Observable.empty()
+                } else {
+                    return Observable<Int>.create { observer in
+                        self.tPageCount = 1
+                        observer.onNext(1)
+                        observer.onCompleted()
+                        return Disposables.create()
+                    }
+                }
+        }
+        
+        let transactionNextPageRequest = tloadingObservable.asObservable()
+            .sample(tNextPageTrigger)
+            .flatMap { loading -> Observable<Int> in
+                if loading {
+                    return Observable.empty()
+                } else {
+                    return Observable<Int>.create { [unowned self] observer in
+                        self.tPageCount += 1
+                        print(self.tPageCount)
+                        observer.onNext(self.tPageCount)
+                        observer.onCompleted()
+                        return Disposables.create()
+                    }
+                }
+        }
+        
+        let transactionRequest = Observable.merge(transactionRefreshRequest, transactionNextPageRequest, transactionChangeNetworkRequest)
+            .share(replay: 1)
+        
+        let transactionResponse = Observable.combineLatest(transactionRequest, setCurrentNetwork.asObservable())
+            .flatMapLatest { page, network in
+                trackerService.getTransactionList(network: network, page: page)
+            }.share(replay: 1)
+        
+        Observable
+            .combineLatest(tReload.asObservable(), transactionRequest, transactionResponse, transactionItems.asObservable()) { _, request, response, transactions in
+                return self.tPageCount == 1 ? response : transactions + response
+            }
+            .sample(transactionResponse)
+            .bind(to: transactionItems)
+            .disposed(by: disposeBag)
+        
+        Observable
+            .merge(transactionRequest.map{ _ in true },
+                   transactionResponse.map { _ in false },
+                   error.map { _ in false })
+            .bind(to: tisLoading)
+            .disposed(by: disposeBag)
+        
+        
     }
 }
 

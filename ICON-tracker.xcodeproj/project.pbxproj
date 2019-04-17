@@ -19,6 +19,8 @@
 		1B244E8B224CA01700415791 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B244E89224CA01700415791 /* Main.storyboard */; };
 		1B244E8D224CA01A00415791 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1B244E8C224CA01A00415791 /* Assets.xcassets */; };
 		1B244E90224CA01A00415791 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B244E8E224CA01A00415791 /* LaunchScreen.storyboard */; };
+		1B9D32032266E40300E40981 /* ChildAViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9D32022266E40300E40981 /* ChildAViewController.swift */; };
+		1B9D32052266E9A800E40981 /* ChildBViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9D32042266E9A800E40981 /* ChildBViewController.swift */; };
 		1BBFF8FC22531CDD00471174 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBFF8FB22531CDC00471174 /* Response.swift */; };
 		1BE53B842255A9B200AC6397 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE53B832255A9B200AC6397 /* Error.swift */; };
 		1BE53B882255D04700AC6397 /* TransactionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE53B872255D04700AC6397 /* TransactionViewModel.swift */; };
@@ -48,6 +50,8 @@
 		1B244E8C224CA01A00415791 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1B244E8F224CA01A00415791 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1B244E91224CA01A00415791 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1B9D32022266E40300E40981 /* ChildAViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildAViewController.swift; sourceTree = "<group>"; };
+		1B9D32042266E9A800E40981 /* ChildBViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildBViewController.swift; sourceTree = "<group>"; };
 		1BBFF8FB22531CDC00471174 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		1BE53B832255A9B200AC6397 /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		1BE53B872255D04700AC6397 /* TransactionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionViewModel.swift; sourceTree = "<group>"; };
@@ -121,6 +125,8 @@
 				1BF335A32251D29700A1F2D8 /* Utils.swift */,
 				1BF335A72251FD9500A1F2D8 /* Logger.swift */,
 				1B1DA15A225C3D9300338383 /* Setting */,
+				1B9D32022266E40300E40981 /* ChildAViewController.swift */,
+				1B9D32042266E9A800E40981 /* ChildBViewController.swift */,
 			);
 			path = "ICON-tracker";
 			sourceTree = "<group>";
@@ -251,7 +257,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ICON-tracker/Pods-ICON-tracker-frameworks.sh",
+				"${SRCROOT}/Pods/Target Support Files/Pods-ICON-tracker/Pods-ICON-tracker-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/BigInt/BigInt.framework",
 				"${BUILT_PRODUCTS_DIR}/Charts/Charts.framework",
 				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
@@ -282,7 +288,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ICON-tracker/Pods-ICON-tracker-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ICON-tracker/Pods-ICON-tracker-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A238CC24467D5949F7B742BC /* [CP] Check Pods Manifest.lock */ = {
@@ -317,6 +323,8 @@
 				1B1EA63D2256E49500371478 /* ChooseNetworkViewModel.swift in Sources */,
 				1B1DA15C225C3E4000338383 /* SettingViewModel.swift in Sources */,
 				1BF335A22251CEBB00A1F2D8 /* TransactionTabViewController.swift in Sources */,
+				1B9D32032266E40300E40981 /* ChildAViewController.swift in Sources */,
+				1B9D32052266E9A800E40981 /* ChildBViewController.swift in Sources */,
 				1BEFED29224DDAE900CCDD1F /* Requests.swift in Sources */,
 				1B1DA15E225C488D00338383 /* SettingTabTableViewCell.swift in Sources */,
 				1B1EA6392256E45300371478 /* ChooseNetworkViewController.swift in Sources */,

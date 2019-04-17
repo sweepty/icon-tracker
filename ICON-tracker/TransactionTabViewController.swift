@@ -14,17 +14,19 @@ import Charts
 
 class TransactionTabViewController: UIViewController, ChartViewDelegate {
 
+    @IBOutlet weak var mainView: UIView!
+    
     @IBOutlet weak var chooseNetworkButton: UIBarButtonItem!
     @IBOutlet weak var usdPriceLabel: UILabel!
     @IBOutlet weak var totalSupplyLabel: UILabel!
     
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     
-    @IBOutlet weak var tableView: UITableView!
-    
     private let refreshControl = UIRefreshControl()
     
     @IBOutlet weak var lineChartView: LineChartView!
+    
+    @IBOutlet weak var containerView: UIView!
     
     var chartInfoResponse = [ChartInfo]()
     
@@ -35,15 +37,26 @@ class TransactionTabViewController: UIViewController, ChartViewDelegate {
         
         refreshControl.sendActions(for: .valueChanged)
         
+        // initial add subviews
+        let blockSubView = self.storyboard?.instantiateViewController(withIdentifier: "childA")
+        self.addChild(blockSubView!)
+        self.containerView.addSubview(blockSubView!.view)
+        
+        let transactionSubView = self.storyboard?.instantiateViewController(withIdentifier: "childB")
+        self.addChild(transactionSubView!)
+        self.containerView.addSubview(transactionSubView!.view)
+        
+        
         setupUI()
         setupBindings()
         
         setupChartView()
         setupChartData()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.lineChartView.animate(xAxisDuration: 1.0, yAxisDuration: 1.0)
+        self.lineChartView.animate(xAxisDuration: 0.0, yAxisDuration: 1.0)
     }
     
     func setupChartView() {
@@ -87,13 +100,11 @@ class TransactionTabViewController: UIViewController, ChartViewDelegate {
         totalSupplyLabel.isHidden = true
         usdPriceLabel.isHidden = true
         
-        tableView.insertSubview(refreshControl, at: 0)
     }
     
     func setupBindings() {
         // theme        
         view.theme.backgroundColor = themeService.attrStream { $0.backgroundColor }
-        tableView.theme.backgroundColor = themeService.attrStream { $0.backgroundColor }
         
         viewModel.values.asObservable()
             .subscribe(onNext: { (x) in
@@ -102,8 +113,6 @@ class TransactionTabViewController: UIViewController, ChartViewDelegate {
                 self.lineChartView.data = nil
                 self.chartInfoResponse = x
                 self.setupChartData()
-                // viewwillappear에서도 하는데 reload 때문에 여기서도 해주면 낭비아닐까?
-//                self.lineChartView.animate(xAxisDuration: 3.0, yAxisDuration: 3.0)
                 
             }).disposed(by: disposeBag)
         
@@ -120,9 +129,27 @@ class TransactionTabViewController: UIViewController, ChartViewDelegate {
             .disposed(by: disposeBag)
         
         viewModel.segmentedValue.asObservable()
-            .subscribe { (x) in
+            .subscribe(onNext: { (x) in
                 Log.Debug("UISegmentedControl value \(String(describing: x))")
-            }.disposed(by: disposeBag)
+                
+                switch x {
+                case 0:
+                    let childB = self.containerView.subviews.last
+                    childB?.isHidden = true
+                    
+                    let childA = self.containerView.subviews.first
+                    childA?.isHidden = false
+
+                default:
+                    let childA = self.containerView.subviews.first
+                    childA?.isHidden = true
+                    
+                    let childB = self.containerView.subviews.last
+                    childB?.isHidden = false
+                    
+                }
+            })
+            .disposed(by: disposeBag)
         
         // Current USD Price
         let currentPriceObservable = viewModel.currentPrice
@@ -150,33 +177,16 @@ class TransactionTabViewController: UIViewController, ChartViewDelegate {
             .drive(totalSupplyLabel.rx.isHidden)
             .disposed(by: disposeBag)
         
-        // TableView
-        viewModel.blockItems
-            .observeOn(MainScheduler.instance)
-            .do(onNext: { [weak self] _ in self?.refreshControl.endRefreshing() })
-            .bind(to: tableView.rx.items(cellIdentifier: "cell", cellType: UITableViewCell.self)) { [weak self] (_, block, cell) in
-                self?.setUpBlockCell(cell, block)
-                
-                cell.theme.backgroundColor = themeService.attrStream { $0.backgroundColor }
-                cell.textLabel?.theme.textColor = themeService.attrStream { $0.textColor }
-                cell.detailTextLabel?.theme.textColor = themeService.attrStream { $0.textColor }
-            }
-            .disposed(by: disposeBag)
-        
-        refreshControl.rx.controlEvent(.valueChanged)
-            .bind(to: viewModel.reload)
-            .disposed(by: disposeBag)
-        
-        tableView.reachedBottom
-            .map { _ in () }
-            .bind(to: viewModel.nextPageTrigger)
-            .disposed(by: disposeBag)
-    }
-    
-    private func setUpBlockCell(_ cell: UITableViewCell, _ blocks: Block) {
-//        cell.textLabel?.text = blocks.hash
-        cell.textLabel?.text = "\(blocks.height)"
-        cell.detailTextLabel?.text = "\(blocks.txCount)"
+        // scroll test
+//        viewModel.nextPageTrigger.asObservable()
+//            .subscribe(onNext: { (_) in
+//                Log.Info("다음페이지로 가고 맨 위로 올리자")
+//                self.view.bringSubviewToFront(self.containerView)
+////                view.topAnchor.constraint(equalTo: gamePreview.topAnchor, constant: 0)
+//                self.containerView.addConstraint(self.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0))
+//                
+//            })
+//            .disposed(by: disposeBag)
     }
 
     /*
