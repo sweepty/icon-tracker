@@ -48,6 +48,43 @@ class Requests {
             return Observable.just("error")
         }
     }
+    
+    func getTransactionDetail(network: Int, hash: String) -> Observable<[Any]> {
+        let iconService = setNetwork(network: network)
+        let request = iconService.getTransaction(hash: hash)
+        let response = request.execute()
+        
+        switch response {
+        case .success(let value):
+            var data = ""
+            
+            if let dat = value.data {
+                switch dat {
+                case .string(let str):
+                    data = str
+                case .dataInfo(let info):
+                    var st = #"{ \#n \#t"method": "\#(info.method)" \#n"#
+                    if let params = info.params {
+                        st += #"\#t"params": {\#n"#
+                        for i in params {
+                            st += #"\#t\#t"\#(i.key)" : "\#(i.value)"\#n"#
+                        }
+                        st += "\t} \n}"
+                        data = st
+                    }
+                }
+            }
+
+            var arr: [Any] = []
+            arr += [value.blockHash, value.blockHeight.hextoInt(), value.signature, value.txHash, value.txIndex, value.timestamp, value.from, value.to, value.stepLimit, value.value ?? "", data]
+            
+            return Observable.just(arr)
+            
+        case .failure(let error):
+            Log.Error(error)
+            return Observable.error(error)
+        }
+    }
 }
 
 class TrackerRequests {
@@ -178,5 +215,31 @@ class TrackerService {
             })
     }
     
+    func getTransactionDetail(network: Int, hash: String) -> Observable<[Any]> {
+        let request = TrackerRequests(network: network, method: .getTransactionDetail, params: ["txHash": hash])
+        
+        return session.rx.data(request: request.createRequest())
+            .flatMap({ (value) -> Observable<[Any]> in
+                let decoded = try decoder.decode(TrackerResponseString<TransactionDetail>.self, from: value)
+                let finalData = decoded.data
+                
+                let arr: [Any] = [
+                    finalData.txHash,
+                    finalData.amount,
+                    finalData.dataString ?? "",
+                    finalData.height,
+                    finalData.toAddr,
+                    finalData.fromAddr,
+                    finalData.dataType,
+                    finalData.status,
+                    finalData.stepLimit,
+                    finalData.stepPrice,
+                    finalData.stepUsedByTxn
+                    
+                ]
+                
+                return Observable.just(arr)
+            })
+    }
 }
 

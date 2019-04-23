@@ -57,7 +57,7 @@ public class TransactionViewModel {
         
         self.values = BehaviorRelay<[ChartInfo]>(value: trackerService.getChartData(network: userDefaultsNetwork))
         
-        Observable.combineLatest(self.reload, self.setCurrentNetwork) { _, network in network }
+        Observable.combineLatest(self.reload, self.setCurrentNetwork, self.tReload) { _, network, _ in network }
             .flatMapLatest { network in
                 return Observable.just(trackerService.getChartData(network: network))
             }

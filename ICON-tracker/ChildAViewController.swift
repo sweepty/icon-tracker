@@ -9,18 +9,23 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import Charts
 
 class ChildAViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     
+    @IBOutlet weak var usdPriceLabel: UILabel!
+    @IBOutlet weak var totalSupplyLabel: UILabel!
+    @IBOutlet weak var lineChartView: LineChartView!
+    
     private let refreshControl = UIRefreshControl()
+    
+    var chartInfoResponse = [ChartInfo]()
     
     var disposeBag = DisposeBag()
     
     // scroll view test
-    var oldContentOffset = CGPoint.zero
-    let topConstraintRange = (CGFloat(0)..<CGFloat(140))
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +35,9 @@ class ChildAViewController: UIViewController {
         refreshControl.sendActions(for: .valueChanged)
         
         setupUI()
-        setupBinding()
+        setupBindings()
+        setupChartData()
+        setupChartView()
 
 //        tableView
     }
@@ -43,16 +50,67 @@ class ChildAViewController: UIViewController {
         print("childA did disappear")
     }
     
-    func setupUI() {
-        tableView.insertSubview(refreshControl, at: 0)
+    func setupChartView() {
+        // chartView
+//        lineChartView.delegate = self
+        lineChartView.pinchZoomEnabled = false
+        lineChartView.setScaleEnabled(false)
+        
+        lineChartView.xAxis.labelPosition = .bottom
+        lineChartView.xAxis.labelTextColor = .white
+        lineChartView.leftAxis.labelTextColor = .white
+        lineChartView.rightAxis.enabled = false
+        
     }
     
-    func setupBinding() {
+    func setupChartData() {
+        var values = [ChartDataEntry]()
+        
+        for i in 0..<chartInfoResponse.count {
+            values.append(ChartDataEntry(x: Double(i), y: chartInfoResponse[i].txCount))
+        }
+        
+        let set1 = LineChartDataSet(values: values, label: "Set 1")
+        
+        set1.drawIconsEnabled = false
+        set1.setColor(.white)
+        set1.setCircleColor(.white)
+        set1.lineWidth = 1
+        set1.circleRadius = 3
+        set1.valueFont = .systemFont(ofSize: 9)
+        set1.valueTextColor = .white
+        set1.formLineWidth = 1
+        set1.formSize = 15
+        
+        let data = LineChartData(dataSet: set1)
+        
+        lineChartView.data = data
+    }
+    
+    func setupBindings() {
+        // theme
+        view.theme.backgroundColor = themeService.attrStream { $0.backgroundColor }
+        
+        viewModel.values.asObservable()
+            .subscribe(onNext: { (x) in
+                // 차트 데이터 변경
+                Log.Verbose("차트 데이터 변경함")
+                self.lineChartView.data = nil
+                self.chartInfoResponse = x
+                self.setupChartData()
+                
+            }).disposed(by: disposeBag)
+    
+        
+        viewModel.title
+            .drive(navigationItem.rx.title)
+            .disposed(by: disposeBag)
+        
         viewModel.blockItems
             .observeOn(MainScheduler.instance)
             .do(onNext: { [weak self] _ in self?.refreshControl.endRefreshing() })
             .bind(to: tableView.rx.items(cellIdentifier: "cell", cellType: UITableViewCell.self)) { (_, block, cell) in
-
+                
                 cell.theme.backgroundColor = themeService.attrStream { $0.backgroundColor }
                 cell.textLabel?.theme.textColor = themeService.attrStream { $0.textColor }
                 cell.detailTextLabel?.theme.textColor = themeService.attrStream { $0.textColor }
@@ -70,9 +128,39 @@ class ChildAViewController: UIViewController {
             .map { _ in () }
             .bind(to: viewModel.nextPageTrigger)
             .disposed(by: disposeBag)
-    }    
+        
+        // Current USD Price
+        let currentPriceObservable = viewModel.currentPrice
+            .distinctUntilChanged()
+        
+        currentPriceObservable
+            .drive(usdPriceLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        currentPriceObservable
+            .map { $0.isEmpty }
+            .drive(usdPriceLabel.rx.isHidden)
+            .disposed(by: disposeBag)
+        
+        // Total Supply
+        let icxSupplyObservable = viewModel.icxSupply
+            .distinctUntilChanged()
+        
+        icxSupplyObservable
+            .drive(totalSupplyLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        icxSupplyObservable
+            .map { $0.isEmpty }
+            .drive(totalSupplyLabel.rx.isHidden)
+            .disposed(by: disposeBag)
+    }
     
-    
+    func setupUI() {
+        tableView.insertSubview(refreshControl, at: 0)
+        totalSupplyLabel.isHidden = true
+        usdPriceLabel.isHidden = true
+    }
 
     /*
     // MARK: - Navigation

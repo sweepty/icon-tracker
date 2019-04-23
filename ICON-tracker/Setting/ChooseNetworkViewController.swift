@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class ChooseNetworkViewController: UIViewController {
+class ChooseNetworkViewController: UIViewController, UITableViewDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     
@@ -20,6 +20,8 @@ class ChooseNetworkViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.tableView.rx.setDelegate(self).disposed(by: disposeBag)
         
         setupUI()
     }
@@ -31,8 +33,13 @@ class ChooseNetworkViewController: UIViewController {
     
     func setupUI() {
         viewModel.networks
-            .drive(tableView.rx.items(cellIdentifier: "cell", cellType: UITableViewCell.self)) { [weak self] (_, network, cell) in
+            .drive(tableView.rx.items(cellIdentifier: "cell", cellType: UITableViewCell.self)) { [weak self] (index, network, cell) in
                 self?.setUpBlockCell(cell, network)
+                if UserDefaults.standard.integer(forKey: "network") == index {
+                    cell.accessoryType = .checkmark
+                } else {
+                    cell.accessoryType = .none
+                }
         }.disposed(by: disposeBag)
         
         tableView.rx.modelSelected(Int.self)
@@ -42,9 +49,11 @@ class ChooseNetworkViewController: UIViewController {
         
         viewModel.didSelectNetwork
             .distinctUntilChanged()
+            .observeOn(MainScheduler.instance)
             .subscribe(onNext: { (network) in
                 UserDefaults.standard.set(network, forKey: "network")
                 Log.Error("유저 \(UserDefaults.standard.integer(forKey: "network")) 입니다")
+                self.tableView.reloadData()
             })
             .disposed(by: disposeBag)
     }
@@ -64,6 +73,9 @@ class ChooseNetworkViewController: UIViewController {
         cell.textLabel?.text = labelString
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.tableView.deselectRow(at: indexPath, animated: true)
+    }
 
     /*
     // MARK: - Navigation
