@@ -15,9 +15,7 @@ class TransactionDetailViewModel {
     let hash: PublishSubject<String>
     let detail: Observable<[Any]>
     
-    let disposeBag = DisposeBag()
-    
-    init(iconRequest: Requests = Requests(), trackerService: TrackerService = TrackerService()) {
+    init(iconRequest: Requests = Requests()) {
         let userDefaultsNetwork = UserDefaults.standard.integer(forKey: "network")
         self.hash = PublishSubject<String>()
         

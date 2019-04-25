@@ -46,21 +46,38 @@ class TransactionDetailViewController: UIViewController, UITextViewDelegate {
                 cell.detailTextLabel?.text = "\(element)"
                 
                 if row == self.titleList.count - 1 {
-//                    self.dataTextView.text = "\(element)"
-                    self.dataTextView.attributedText = NSAttributedString(string: "\(element)")
-//                    self.dat
+                    let el = element as? String
+                    
+                    if let el = el, el.hasPrefix("0x") {
+                        guard let hex = Data(hexString: el.prefix0xRemoved()), let str = String(data: hex, encoding: .utf8) else {
+                            self.dataTextView.text = ""
+                            return
+                        }
+                        self.dataTextView.text = str
+                        
+                    } else {
+                        self.dataTextView.text = el
+                    }
+                    
+                } else {
+                    cell.textLabel?.text = self.titleList[row]
+                    cell.detailTextLabel?.text = "\(element)"
                 }
+                
             }
             .disposed(by: disposeBag)
         
-//        detailShare
+        // 1
+//        Observable<String>.just(hashString)
+//            .bind(to: detailViewModel.hash)
+//            .disposed(by: disposeBag)
         
-
-        // hash 넘겨 받아서 viewModel에 전달
-        Observable<String>.just(hashString)
-            .bind(to: detailViewModel.hash)
-            .disposed(by: disposeBag)
-        
+        // 2
+//        Observable<String>.just(hashString)
+//            .subscribe(detailViewModel.hash)
+//            .disposed(by: disposeBag)
+        // 3
+        detailViewModel.hash.onNext(hashString)
         
     }
 
@@ -74,8 +91,4 @@ class TransactionDetailViewController: UIViewController, UITextViewDelegate {
     }
     */
 
-}
-
-extension TransactionDetailViewController: UITableViewDelegate {
-    
 }

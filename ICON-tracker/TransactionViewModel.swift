@@ -77,13 +77,13 @@ public class TransactionViewModel {
             }
         }
         
-        self.currentPrice = Observable.combineLatest( self.reload, setCurrentNetwork.asObservable() ) { _, network in network }
-            .flatMapLatest { network in
+        self.currentPrice = Observable.combineLatest( reload, setCurrentNetwork )
+            .flatMapLatest { _, network in
                 trackerService.getCurrentExchange(network: network)
             }.asDriver(onErrorJustReturn: "error")
         
-        self.icxSupply = Observable.combineLatest( self.reload, setCurrentNetwork.asObservable() ) { _, network in network }
-            .flatMapLatest { network in
+        self.icxSupply = Observable.combineLatest( reload, setCurrentNetwork )
+            .flatMapLatest { _, network in
                 iconService.getTotalSupply(network: network)
             }.asDriver(onErrorJustReturn: "error")
         

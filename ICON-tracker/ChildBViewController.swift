@@ -43,8 +43,6 @@ class ChildBViewController: UIViewController, UITableViewDelegate {
     }
     
     func setupChartView() {
-        // chartView
-//        lineChartView.delegate = self
         lineChartView.pinchZoomEnabled = false
         lineChartView.setScaleEnabled(false)
         
@@ -52,10 +50,6 @@ class ChildBViewController: UIViewController, UITableViewDelegate {
         lineChartView.xAxis.labelTextColor = .white
         lineChartView.leftAxis.labelTextColor = .white
         lineChartView.rightAxis.enabled = false
-        
-        // floating label
-//        lineChartView.selectlab
-        
     }
     
     func setupChartData() {

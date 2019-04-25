@@ -214,32 +214,5 @@ class TrackerService {
                 return Observable.just(decoded)
             })
     }
-    
-    func getTransactionDetail(network: Int, hash: String) -> Observable<[Any]> {
-        let request = TrackerRequests(network: network, method: .getTransactionDetail, params: ["txHash": hash])
-        
-        return session.rx.data(request: request.createRequest())
-            .flatMap({ (value) -> Observable<[Any]> in
-                let decoded = try decoder.decode(TrackerResponseString<TransactionDetail>.self, from: value)
-                let finalData = decoded.data
-                
-                let arr: [Any] = [
-                    finalData.txHash,
-                    finalData.amount,
-                    finalData.dataString ?? "",
-                    finalData.height,
-                    finalData.toAddr,
-                    finalData.fromAddr,
-                    finalData.dataType,
-                    finalData.status,
-                    finalData.stepLimit,
-                    finalData.stepPrice,
-                    finalData.stepUsedByTxn
-                    
-                ]
-                
-                return Observable.just(arr)
-            })
-    }
 }
 

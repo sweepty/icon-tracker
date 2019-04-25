@@ -67,7 +67,7 @@ enum TrackerMethod: String {
     // token transaction list
     case getTokenTxList = "/token/txList"
     // chart data
-    case getChartData = "main/mainChart"
+    case getChartData = "/main/mainChart"
 }
 
 var decoder: JSONDecoder {
