@@ -100,12 +100,10 @@ class ChildBViewController: UIViewController, UITableViewDelegate {
             .do(onNext: { [weak self] _ in self?.refreshControl.endRefreshing() })
             .bind(to: tableView.rx.items(cellIdentifier: "cell", cellType: ChildBTableViewCell.self)) { (_, transaction, cell) in
                 
-//                cell.theme.backgroundColor = themeService.attrStream { $0.backgroundColor }
-//                cell.textLabel?.theme.textColor = themeService.attrStream { $0.textColor }
-//                cell.detailTextLabel?.theme.textColor = themeService.attrStream { $0.textColor }
-                
-//                cell.textLabel?.text = "\(transaction.height)"
-//                cell.detailTextLabel?.text = transaction.createDate
+                cell.theme.backgroundColor = themeService.attrStream { $0.backgroundColor }
+                cell.txHashLabel?.theme.textColor = themeService.attrStream { $0.textColor }
+                cell.valueLabel?.theme.textColor = themeService.attrStream { $0.textColor }
+                cell.heightLabel?.theme.textColor = themeService.attrStream { $0.textColor }
 
                 if transaction.state == 0 {
                     cell.statusView.backgroundColor = UIColor.red
