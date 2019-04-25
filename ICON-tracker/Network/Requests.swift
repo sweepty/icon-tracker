@@ -76,7 +76,9 @@ class Requests {
             }
 
             var arr: [Any] = []
-            arr += [value.blockHash, value.blockHeight.hextoInt(), value.signature, value.txHash, value.txIndex, value.timestamp, value.from, value.to, value.stepLimit, value.value ?? "", data]
+            arr += [value.blockHash, value.blockHeight.hextoInt(), value.signature,
+                    value.txHash, value.timestamp.hextoDate()!, value.from, value.to,
+                    value.stepLimit.hextoInt(), value.value?.hexToBigUInt() ?? "", data]
             
             return Observable.just(arr)
             

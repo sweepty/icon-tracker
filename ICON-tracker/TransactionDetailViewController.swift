@@ -19,21 +19,19 @@ class TransactionDetailViewController: UIViewController, UITextViewDelegate {
     
     private let detailViewModel = TransactionDetailViewModel()
     
-    var hashString: String = ""
+    var hashString: String = String()
     
     let disposeBag = DisposeBag()
     
-    let titleList = ["blockHash", "height", "signature", "txHash", "txIndex", "timestamp", "from", "to", "stepLimit", "value", "data"]
+    let titleList = ["blockHash", "height", "signature", "txHash", "timestamp", "from", "to", "stepLimit", "value", "data"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.dataTextView.delegate = self
         self.dataTextView.isEditable = false
-//        self.dataTextView.
         
         setUpBinding()
-        
     }
     
     func setUpBinding() {
@@ -42,9 +40,7 @@ class TransactionDetailViewController: UIViewController, UITextViewDelegate {
         detailShare
             .observeOn(MainScheduler.instance)
             .bind(to: self.tableView.rx.items(cellIdentifier: "cell1", cellType: UITableViewCell.self)) { (row, element, cell) in
-                cell.textLabel?.text = self.titleList[row]
-                cell.detailTextLabel?.text = "\(element)"
-                
+
                 if row == self.titleList.count - 1 {
                     let el = element as? String
                     
