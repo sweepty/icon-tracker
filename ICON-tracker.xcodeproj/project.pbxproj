@@ -86,21 +86,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1B1DA15A225C3D9300338383 /* Setting */ = {
-			isa = PBXGroup;
-			children = (
-				1B1EA63C2256E49500371478 /* ChooseNetworkViewModel.swift */,
-				1B1EA6382256E45300371478 /* ChooseNetworkViewController.swift */,
-				1B1EA6362256E2A600371478 /* ChooseNetwork.storyboard */,
-				1B1DA156225C3CFF00338383 /* SettingTabViewController.swift */,
-				1B1DA158225C3D1900338383 /* SettingTab.storyboard */,
-				1B1DA15B225C3E4000338383 /* SettingViewModel.swift */,
-				1B1DA15D225C488D00338383 /* SettingTabTableViewCell.swift */,
-				1B1DA15F225C69C700338383 /* Theme.swift */,
-			);
-			path = Setting;
-			sourceTree = "<group>";
-		};
 		1B244E79224CA01700415791 = {
 			isa = PBXGroup;
 			children = (
@@ -122,23 +107,16 @@
 		1B244E84224CA01700415791 /* ICON-tracker */ = {
 			isa = PBXGroup;
 			children = (
-				1BE53B862255AC2800AC6397 /* Support Files */,
-				1BE53B80225591A800AC6397 /* Model */,
-				1BEFED21224DB5DB00CCDD1F /* Network */,
 				1B244E89224CA01700415791 /* Main.storyboard */,
-				1BF335A12251CEBB00A1F2D8 /* TransactionTabViewController.swift */,
-				1BE53B872255D04700AC6397 /* TransactionViewModel.swift */,
-				1BEFED24224DC5C200CCDD1F /* TransactionTab.storyboard */,
+				1BEFED21224DB5DB00CCDD1F /* Networking */,
+				1BF347782271ACCB00FDE66F /* SettingTab */,
+				1BF347772271ACB400FDE66F /* TransactionTab */,
+				1BE53B80225591A800AC6397 /* Model */,
 				1B244E91224CA01A00415791 /* Info.plist */,
 				1BF335A32251D29700A1F2D8 /* Utils.swift */,
 				1BF335A72251FD9500A1F2D8 /* Logger.swift */,
-				1B1DA15A225C3D9300338383 /* Setting */,
-				1B9D32022266E40300E40981 /* ChildAViewController.swift */,
-				1BD290E5226D88E600C5855E /* TransactionDetailViewController.swift */,
-				1BD290E7226D8A9B00C5855E /* TransactionDetailViewModel.swift */,
-				1B9D32042266E9A800E40981 /* ChildBViewController.swift */,
-				1BD290EA226DB20800C5855E /* TransactionDetail.storyboard */,
-				1BD96A93226EB70E0062D575 /* ChildBTableViewCell.swift */,
+				1B1DA15F225C69C700338383 /* Theme.swift */,
+				1BE53B862255AC2800AC6397 /* Support Files */,
 			);
 			path = "ICON-tracker";
 			sourceTree = "<group>";
@@ -163,13 +141,67 @@
 			path = "Support Files";
 			sourceTree = "<group>";
 		};
-		1BEFED21224DB5DB00CCDD1F /* Network */ = {
+		1BEFED21224DB5DB00CCDD1F /* Networking */ = {
 			isa = PBXGroup;
 			children = (
 				1BEFED22224DBA2900CCDD1F /* URL.swift */,
 				1BEFED28224DDAE900CCDD1F /* Requests.swift */,
 			);
-			path = Network;
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		1BF347772271ACB400FDE66F /* TransactionTab */ = {
+			isa = PBXGroup;
+			children = (
+				1BF3477B2271ADF200FDE66F /* Blocks */,
+				1BF3477C2271ADFD00FDE66F /* Transactions */,
+				1BE53B872255D04700AC6397 /* TransactionViewModel.swift */,
+				1BEFED24224DC5C200CCDD1F /* TransactionTab.storyboard */,
+				1BF335A12251CEBB00A1F2D8 /* TransactionTabViewController.swift */,
+			);
+			path = TransactionTab;
+			sourceTree = "<group>";
+		};
+		1BF347782271ACCB00FDE66F /* SettingTab */ = {
+			isa = PBXGroup;
+			children = (
+				1BF3477A2271ADD400FDE66F /* ChooseNetwork */,
+				1B1DA15B225C3E4000338383 /* SettingViewModel.swift */,
+				1B1DA15D225C488D00338383 /* SettingTabTableViewCell.swift */,
+				1B1DA156225C3CFF00338383 /* SettingTabViewController.swift */,
+				1B1DA158225C3D1900338383 /* SettingTab.storyboard */,
+			);
+			path = SettingTab;
+			sourceTree = "<group>";
+		};
+		1BF3477A2271ADD400FDE66F /* ChooseNetwork */ = {
+			isa = PBXGroup;
+			children = (
+				1B1EA63C2256E49500371478 /* ChooseNetworkViewModel.swift */,
+				1B1EA6382256E45300371478 /* ChooseNetworkViewController.swift */,
+				1B1EA6362256E2A600371478 /* ChooseNetwork.storyboard */,
+			);
+			path = ChooseNetwork;
+			sourceTree = "<group>";
+		};
+		1BF3477B2271ADF200FDE66F /* Blocks */ = {
+			isa = PBXGroup;
+			children = (
+				1B9D32022266E40300E40981 /* ChildAViewController.swift */,
+			);
+			path = Blocks;
+			sourceTree = "<group>";
+		};
+		1BF3477C2271ADFD00FDE66F /* Transactions */ = {
+			isa = PBXGroup;
+			children = (
+				1BD96A93226EB70E0062D575 /* ChildBTableViewCell.swift */,
+				1B9D32042266E9A800E40981 /* ChildBViewController.swift */,
+				1BD290E7226D8A9B00C5855E /* TransactionDetailViewModel.swift */,
+				1BD290EA226DB20800C5855E /* TransactionDetail.storyboard */,
+				1BD290E5226D88E600C5855E /* TransactionDetailViewController.swift */,
+			);
+			path = Transactions;
 			sourceTree = "<group>";
 		};
 		77D7DE165EF9C77BBE9572CD /* Pods */ = {
@@ -279,7 +311,6 @@
 				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/RxTheme/RxTheme.framework",
-				"${BUILT_PRODUCTS_DIR}/SipHash/SipHash.framework",
 				"${BUILT_PRODUCTS_DIR}/scrypt/scrypt.framework",
 				"${BUILT_PRODUCTS_DIR}/secp256k1_ios/secp256k1_ios.framework",
 			);
@@ -295,7 +326,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxTheme.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SipHash.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/scrypt.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/secp256k1_ios.framework",
 			);

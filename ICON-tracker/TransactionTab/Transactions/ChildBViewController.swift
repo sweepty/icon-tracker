@@ -50,6 +50,7 @@ class ChildBViewController: UIViewController, UITableViewDelegate {
         lineChartView.xAxis.labelTextColor = .white
         lineChartView.leftAxis.labelTextColor = .white
         lineChartView.rightAxis.enabled = false
+        lineChartView.legend.enabled = false
     }
     
     func setupChartData() {
@@ -59,8 +60,7 @@ class ChildBViewController: UIViewController, UITableViewDelegate {
             values.append(ChartDataEntry(x: Double(i), y: chartInfoResponse[i].txCount))
         }
         
-        let set1 = LineChartDataSet(values: values, label: "Set 1")
-        
+        let set1 = LineChartDataSet(entries: values, label: nil)
         set1.drawIconsEnabled = false
         set1.setColor(.white)
         set1.setCircleColor(.white)
@@ -97,7 +97,10 @@ class ChildBViewController: UIViewController, UITableViewDelegate {
         
         viewModel.transactionItems
             .observeOn(MainScheduler.instance)
-            .do(onNext: { [weak self] _ in self?.refreshControl.endRefreshing() })
+            .do(onNext: { [weak self] _ in
+                print("thread - \(Thread.current)")
+                self?.refreshControl.endRefreshing()
+            })
             .bind(to: tableView.rx.items(cellIdentifier: "cell", cellType: ChildBTableViewCell.self)) { (_, transaction, cell) in
                 
                 cell.theme.backgroundColor = themeService.attrStream { $0.backgroundColor }

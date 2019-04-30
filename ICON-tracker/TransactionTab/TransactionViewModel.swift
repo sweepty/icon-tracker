@@ -217,7 +217,8 @@ public class TransactionViewModel {
         let transactionResponse = Observable.combineLatest(transactionRequest, setCurrentNetwork.asObservable())
             .flatMapLatest { page, network in
                 trackerService.getTransactionList(network: network, page: page)
-            }.share(replay: 1)
+            }
+            .share(replay: 1)
         
         Observable
             .combineLatest(tReload.asObservable(), transactionRequest, transactionResponse, transactionItems.asObservable()) { _, request, response, transactions in

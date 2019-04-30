@@ -60,7 +60,7 @@ class ChildAViewController: UIViewController {
         lineChartView.xAxis.labelTextColor = .white
         lineChartView.leftAxis.labelTextColor = .white
         lineChartView.rightAxis.enabled = false
-        
+        lineChartView.legend.enabled = false
     }
     
     func setupChartData() {
@@ -70,7 +70,7 @@ class ChildAViewController: UIViewController {
             values.append(ChartDataEntry(x: Double(i), y: chartInfoResponse[i].txCount))
         }
         
-        let set1 = LineChartDataSet(values: values, label: "Set 1")
+        let set1 = LineChartDataSet(entries: values, label: nil)
         
         set1.drawIconsEnabled = false
         set1.setColor(.white)
