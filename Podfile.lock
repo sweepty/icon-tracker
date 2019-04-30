@@ -1,9 +1,8 @@
 PODS:
-  - BigInt (3.1.0):
-    - SipHash (~> 1.2)
-  - Charts (3.2.2):
-    - Charts/Core (= 3.2.2)
-  - Charts/Core (3.2.2)
+  - BigInt (4.0.0)
+  - Charts (3.3.0):
+    - Charts/Core (= 3.3.0)
+  - Charts/Core (3.3.0)
   - CryptoSwift (0.11.0)
   - ICONKit (0.3.1):
     - BigInt
@@ -21,10 +20,8 @@ PODS:
   - scrypt (2.0):
     - CryptoSwift (~> 0.11)
   - secp256k1_ios (0.1.3)
-  - SipHash (1.2.2)
 
 DEPENDENCIES:
-  - BigInt
   - Charts
   - ICONKit (~> 0.3.0)
   - RxCocoa (~> 4.0)
@@ -43,11 +40,10 @@ SPEC REPOS:
     - RxTheme
     - scrypt
     - secp256k1_ios
-    - SipHash
 
 SPEC CHECKSUMS:
-  BigInt: 76b5dfdfa3e2e478d4ffdf161aeede5502e2742f
-  Charts: f69cf0518b6d1d62608ca504248f1bbe0b6ae77e
+  BigInt: 2aad1a9942dc932ec8b84290d2c564a3d76f97ab
+  Charts: ec1f57f9340054155691e84d4544a1d239d382c5
   CryptoSwift: ad5208dd2aae0a764ea4ce2c2d34bd067cae67f0
   ICONKit: 1e73834efe4a73f0e9574688b7b17b098948da33
   Result: bd966fac789cc6c1563440b348ab2598cc24d5c7
@@ -56,8 +52,7 @@ SPEC CHECKSUMS:
   RxTheme: 40fdcdeba539402beface070d8472e8d0db78d66
   scrypt: 3fe5b1a3b0976f97cd87488673a8f7c65708cc84
   secp256k1_ios: ac9ef04e761f43c58012b28548afa91493761f17
-  SipHash: fad90a4683e420c52ef28063063dbbce248ea6d4
 
-PODFILE CHECKSUM: eb665cdb1ba0fb994e68419418b2f25b02be0768
+PODFILE CHECKSUM: 63e193e187c0fba63d8458c9c62c53aaa516f343
 
 COCOAPODS: 1.5.3
