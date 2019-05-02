@@ -11,7 +11,7 @@ import RxSwift
 import RxCocoa
 import Charts
 
-class ChildAViewController: UIViewController {
+class ChildAViewController: UIViewController, UITableViewDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -34,12 +34,11 @@ class ChildAViewController: UIViewController {
         
         refreshControl.sendActions(for: .valueChanged)
         
+        self.tableView.rx.setDelegate(self).disposed(by: disposeBag)
         setupUI()
         setupBindings()
         setupChartData()
         setupChartView()
-
-//        tableView
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -55,9 +54,9 @@ class ChildAViewController: UIViewController {
 //        lineChartView.delegate = self
         lineChartView.pinchZoomEnabled = false
         lineChartView.setScaleEnabled(false)
-        
         lineChartView.xAxis.labelPosition = .bottom
         lineChartView.xAxis.labelTextColor = .white
+        lineChartView.xAxis.valueFormatter = self
         lineChartView.leftAxis.labelTextColor = .white
         lineChartView.rightAxis.enabled = false
         lineChartView.legend.enabled = false
@@ -109,14 +108,19 @@ class ChildAViewController: UIViewController {
         viewModel.blockItems
             .observeOn(MainScheduler.instance)
             .do(onNext: { [weak self] _ in self?.refreshControl.endRefreshing() })
-            .bind(to: tableView.rx.items(cellIdentifier: "cell", cellType: UITableViewCell.self)) { (_, block, cell) in
+            .bind(to: tableView.rx.items(cellIdentifier: "cell", cellType: ChildATableViewCell.self)) { (_, block, cell) in
                 
                 cell.theme.backgroundColor = themeService.attrStream { $0.backgroundColor }
                 cell.textLabel?.theme.textColor = themeService.attrStream { $0.textColor }
                 cell.detailTextLabel?.theme.textColor = themeService.attrStream { $0.textColor }
                 
-                cell.textLabel?.text = "\(block.height)"
-                cell.detailTextLabel?.text = block.createDate
+                cell.layer.cornerRadius = 10
+                
+                cell.heightLabel?.text = "\(block.height)"
+                cell.hashLabel?.text = block.hash
+                cell.txCountLabel?.text = "\(block.txCount)"
+                cell.timestampLabel?.text = block.createDate.calculateAge() + "\t ago"
+                
             }
             .disposed(by: disposeBag)
         
@@ -161,6 +165,10 @@ class ChildAViewController: UIViewController {
         totalSupplyLabel.isHidden = true
         usdPriceLabel.isHidden = true
     }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
+    }
 
     /*
     // MARK: - Navigation
@@ -172,4 +180,21 @@ class ChildAViewController: UIViewController {
     }
     */
 
+}
+
+extension ChildAViewController: IAxisValueFormatter {
+    func stringForValue(_ value: Double, axis: AxisBase?) -> String {
+        let target: String = chartInfoResponse[Int(value)].targetDate
+        let date = mmdd(dateString: target)
+        return date
+    }
+    
+    func mmdd(dateString: String) -> String {
+        let date = dateString.toDate()
+        
+        let dateformatter = DateFormatter()
+        dateformatter.dateFormat = "MMM d"
+        let result = dateformatter.string(from: date)
+        return result
+    }
 }

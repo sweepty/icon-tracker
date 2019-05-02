@@ -29,6 +29,33 @@ extension String {
         }
         return Date(timeIntervalSince1970: Double(sub) / 1000000.0)
     }
+    
+    public func toDate() -> Date {
+        let dateformatter: DateFormatter = {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
+            return formatter
+        }()
+        
+        let date = dateformatter.date(from: self)
+        return date!
+    }
+    
+    public func calculateAge() -> String {
+        let date = self.toDate()
+        let now = Date()
+        do {
+            let formatter = DateComponentsFormatter()
+            formatter.allowedUnits = [.year, .month, .day, .hour, .minute, .second]
+            formatter.unitsStyle = .full
+            // short 1 min
+            // spellOut twenty-eight seconds
+            // full 6 minutes
+            formatter.maximumUnitCount = 1
+            let daysString = formatter.string(from: date, to: now)
+            return daysString!
+        }
+    }
 }
 
 extension Data {
@@ -47,5 +74,20 @@ extension Data {
             }
         }
         self = data
+    }
+}
+
+extension Double {
+    public func calculateAge() -> String {
+        let date = Date(timeIntervalSince1970: self / 1000000.0)
+        let now = Date()
+        do {
+            let formatter = DateComponentsFormatter()
+            formatter.allowedUnits = [.year, .month, .day, .hour, .minute, .second]
+            formatter.unitsStyle = .short
+            formatter.maximumUnitCount = 1
+            let daysString = formatter.string(from: date, to: now)
+            return daysString!
+        }
     }
 }

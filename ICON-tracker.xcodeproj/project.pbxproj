@@ -19,6 +19,7 @@
 		1B244E8B224CA01700415791 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B244E89224CA01700415791 /* Main.storyboard */; };
 		1B244E8D224CA01A00415791 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1B244E8C224CA01A00415791 /* Assets.xcassets */; };
 		1B244E90224CA01A00415791 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B244E8E224CA01A00415791 /* LaunchScreen.storyboard */; };
+		1B3FFA7D22781E5C005D7A32 /* ChildATableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3FFA7C22781E5C005D7A32 /* ChildATableViewCell.swift */; };
 		1B9D32032266E40300E40981 /* ChildAViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9D32022266E40300E40981 /* ChildAViewController.swift */; };
 		1B9D32052266E9A800E40981 /* ChildBViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9D32042266E9A800E40981 /* ChildBViewController.swift */; };
 		1BBFF8FC22531CDD00471174 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBFF8FB22531CDC00471174 /* Response.swift */; };
@@ -54,6 +55,7 @@
 		1B244E8C224CA01A00415791 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1B244E8F224CA01A00415791 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1B244E91224CA01A00415791 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1B3FFA7C22781E5C005D7A32 /* ChildATableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildATableViewCell.swift; sourceTree = "<group>"; };
 		1B9D32022266E40300E40981 /* ChildAViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildAViewController.swift; sourceTree = "<group>"; };
 		1B9D32042266E9A800E40981 /* ChildBViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildBViewController.swift; sourceTree = "<group>"; };
 		1BBFF8FB22531CDC00471174 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
@@ -188,6 +190,7 @@
 			isa = PBXGroup;
 			children = (
 				1B9D32022266E40300E40981 /* ChildAViewController.swift */,
+				1B3FFA7C22781E5C005D7A32 /* ChildATableViewCell.swift */,
 			);
 			path = Blocks;
 			sourceTree = "<group>";
@@ -383,6 +386,7 @@
 				1BEFED23224DBA2900CCDD1F /* URL.swift in Sources */,
 				1BF335A42251D29700A1F2D8 /* Utils.swift in Sources */,
 				1BF335A82251FD9500A1F2D8 /* Logger.swift in Sources */,
+				1B3FFA7D22781E5C005D7A32 /* ChildATableViewCell.swift in Sources */,
 				1BE53B882255D04700AC6397 /* TransactionViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
