@@ -318,7 +318,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-ICON-tracker/Pods-ICON-tracker-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-ICON-tracker/Pods-ICON-tracker-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/BigInt/BigInt.framework",
 				"${BUILT_PRODUCTS_DIR}/Charts/Charts.framework",
 				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
@@ -351,7 +351,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ICON-tracker/Pods-ICON-tracker-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ICON-tracker/Pods-ICON-tracker-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A238CC24467D5949F7B742BC /* [CP] Check Pods Manifest.lock */ = {
