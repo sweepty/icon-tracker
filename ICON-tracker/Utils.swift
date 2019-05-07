@@ -22,6 +22,12 @@ extension String {
         return Int(self.prefix0xRemoved(), radix: 16) ?? 0
     }
     
+    public func hextoDouble() -> Double {
+        let tmp = self.hextoInt()
+        
+        return Double(tmp) / 65535
+    }
+    
     /// Convert hex String to Date
     public func hextoDate() -> Date? {
         guard let sub = Int(self.prefix0xRemoved(), radix: 16) else {
@@ -78,6 +84,17 @@ extension Data {
 }
 
 extension Double {
+    public func toDateString() -> String {
+        let date = Date(timeIntervalSince1970: self / 1000000.0)
+        
+        let dateformatter = DateFormatter()
+        dateformatter.locale = Locale.current
+        dateformatter.dateFormat = "yyyy-MM-dd HH:mm:ssZZZZ"
+        
+        let value = dateformatter.string(from: date)
+        return value
+    }
+    
     public func calculateAge() -> String {
         let date = Date(timeIntervalSince1970: self / 1000000.0)
         let now = Date()
