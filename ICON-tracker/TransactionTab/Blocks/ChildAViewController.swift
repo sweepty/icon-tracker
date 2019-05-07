@@ -133,6 +133,14 @@ class ChildAViewController: UIViewController, UITableViewDelegate {
             .bind(to: viewModel.nextPageTrigger)
             .disposed(by: disposeBag)
         
+        tableView.rx.modelSelected(Block.self)
+            .subscribe(onNext: { (block) in
+                let detailVC = UIStoryboard(name: "BlockDetail", bundle: nil).instantiateInitialViewController() as! BlockDetailViewController
+                detailVC.height = UInt64(block.height)
+                self.navigationController?.pushViewController(detailVC.self, animated: true)
+            })
+            .disposed(by: disposeBag)
+        
         // Current USD Price
         let currentPriceObservable = viewModel.currentPrice
             .distinctUntilChanged()
@@ -168,6 +176,10 @@ class ChildAViewController: UIViewController, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.tableView.deselectRow(at: indexPath, animated: true)
     }
 
     /*
