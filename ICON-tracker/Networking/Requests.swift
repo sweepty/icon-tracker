@@ -87,6 +87,19 @@ class Requests {
             return Observable.error(error)
         }
     }
+    
+    public func getBlockByHeight(network: Int, height: UInt64) -> Observable<Response.Block> {
+        let iconService = setNetwork(network: network)
+        let request = iconService.getBlock(height: height)
+        let response = request.execute()
+        
+        switch response {
+        case .success(let value):
+            return Observable.just(value)
+        case .failure(let error):
+            return Observable.error(error)
+        }
+    }
 }
 
 class TrackerRequests {
