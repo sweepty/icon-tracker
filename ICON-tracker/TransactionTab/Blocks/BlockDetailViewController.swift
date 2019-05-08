@@ -23,7 +23,6 @@ class BlockDetailViewController: UIViewController, UITableViewDelegate {
     @IBOutlet weak var peerIdLabel: UILabel!
     @IBOutlet weak var timestampLabel: UILabel!
     @IBOutlet weak var hashLabel: UILabel!
-//    @IBOutlet weak var sizeLabel: UILabel!
     @IBOutlet weak var amountLabel: UILabel!
     @IBOutlet weak var txfeeLabel: UILabel!
     
@@ -95,11 +94,19 @@ class BlockDetailViewController: UIViewController, UITableViewDelegate {
                         }
                     }
                 }
+//                self.heightLabel.text = "\(firstBlock?.height)"
                 self.amountLabel.text = "\(amount)"
                 self.timestampLabel.text = firstBlock?.timeStamp.toDateString()
                 self.txfeeLabel.text = "\(fee)"
                 
-                
+            })
+            .disposed(by: disposeBag)
+        
+        tableView.rx.modelSelected(Response.Block.ConfirmedTransactionList.self)
+            .subscribe(onNext: { (cell) in
+                let txVC = UIStoryboard(name: "TransactionDetail", bundle: nil).instantiateInitialViewController() as! TransactionDetailViewController
+                txVC.hashString = cell.txHash
+                self.navigationController?.pushViewController(txVC.self, animated: true)
             })
             .disposed(by: disposeBag)
         
