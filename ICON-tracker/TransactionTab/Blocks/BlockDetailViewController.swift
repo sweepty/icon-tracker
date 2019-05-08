@@ -42,7 +42,7 @@ class BlockDetailViewController: UIViewController, UITableViewDelegate {
         
         tableView.rx.setDelegate(self).disposed(by: disposeBag)
         
-        tableView.rowHeight = 130
+        tableView.rowHeight = 120
         
         setupBind()
     }
@@ -129,6 +129,12 @@ class BlockDetailViewController: UIViewController, UITableViewDelegate {
                 cell.fromLabel.text = item.from
                 cell.toLabel.text = item.to
                 cell.amountLabel.text = "\(item.value?.hexToBigUInt()?.convertToICX() ?? "0")"
+                
+                cell.txHashTitleView.layer.cornerRadius = 5
+                cell.fromTitleView.layer.cornerRadius = 5
+                cell.toTtitleView.layer.cornerRadius = 5
+                cell.icxView.layer.cornerRadius = 5
+                
                 return cell
                 
         }, titleForHeaderInSection: { _, _ in
