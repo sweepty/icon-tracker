@@ -13,13 +13,13 @@ import ICONKit
 
 class TransactionDetailViewModel {
     let hash: PublishSubject<String>
-    let detail: Observable<[Any]>
+    let detail: Observable<Response.TransactionByHashResult>
     
     init(iconRequest: Requests = Requests()) {
         let userDefaultsNetwork = UserDefaults.standard.integer(forKey: "network")
         self.hash = PublishSubject<String>()
         
-        self.detail = hash.flatMapLatest({ (hash) -> Observable<[Any]>  in
+        self.detail = hash.flatMapLatest({ (hash) -> Observable<Response.TransactionByHashResult> in
             return iconRequest.getTransactionDetail(network: userDefaultsNetwork, hash: hash)
         })
     }

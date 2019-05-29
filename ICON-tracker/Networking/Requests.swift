@@ -49,38 +49,14 @@ class Requests {
         }
     }
     
-    func getTransactionDetail(network: Int, hash: String) -> Observable<[Any]> {
+    func getTransactionDetail(network: Int, hash: String) -> Observable<Response.TransactionByHashResult> {
         let iconService = setNetwork(network: network)
         let request = iconService.getTransaction(hash: hash)
         let response = request.execute()
         
         switch response {
         case .success(let value):
-            var data = ""
-            
-            if let dat = value.data {
-                switch dat {
-                case .string(let str):
-                    data = str
-                case .dataInfo(let info):
-                    var st = #"{ \#n \#t"method": "\#(info.method)" \#n"#
-                    if let params = info.params {
-                        st += #"\#t"params": {\#n"#
-                        for i in params {
-                            st += #"\#t\#t"\#(i.key)" : "\#(i.value)"\#n"#
-                        }
-                        st += "\t} \n}"
-                        data = st
-                    }
-                }
-            }
-
-            var arr: [Any] = []
-            arr += [value.blockHash, value.blockHeight.hextoInt(), value.signature,
-                    value.txHash, value.timestamp.hextoDate()!, value.from, value.to,
-                    value.stepLimit.hextoInt(), value.value?.hexToBigUInt() ?? "", data]
-            
-            return Observable.just(arr)
+            return Observable.just(value)
             
         case .failure(let error):
             Log.Error(error)

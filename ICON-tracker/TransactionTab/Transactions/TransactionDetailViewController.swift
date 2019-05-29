@@ -11,80 +11,78 @@ import RxSwift
 import RxCocoa
 import ICONKit
 
-class TransactionDetailViewController: UIViewController, UITextViewDelegate {
-
-    @IBOutlet weak var tableView: UITableView!
-
-    @IBOutlet weak var dataTextView: UITextView!
+class TransactionDetailViewController: UIViewController {
     
-    private let detailViewModel = TransactionDetailViewModel()
+    @IBOutlet weak var txHashLabel: UILabel!
+    @IBOutlet weak var blockHeightLabel: UILabel!
+    @IBOutlet weak var timestampLabel: UILabel!
+    @IBOutlet weak var fromLabel: UILabel!
+    @IBOutlet weak var toLabel: UILabel!
+    @IBOutlet weak var amountLabel: UILabel!
+    @IBOutlet weak var stepLimit: UILabel!
+    @IBOutlet weak var actualStepLabel: UILabel!
     
-    var hashString: String = String()
+    @IBOutlet weak var dataView: UIView!
+    
+    var hashString = String()
     
     let disposeBag = DisposeBag()
-    
-    let titleList = ["blockHash", "height", "signature", "txHash", "timestamp", "from", "to", "stepLimit", "value", "data"]
+    let detailViewModel = TransactionDetailViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.dataTextView.delegate = self
-        self.dataTextView.isEditable = false
-        
-        setUpBinding()
+        setupBind()
     }
     
-    func setUpBinding() {
-        let detailShare = detailViewModel.detail.observeOn(MainScheduler.instance).share(replay: 1)
+    func setupBind() {
+        let detailInfo = detailViewModel.detail.share(replay: 1)
         
-        detailShare
-            .observeOn(MainScheduler.instance)
-            .bind(to: self.tableView.rx.items(cellIdentifier: "cell1", cellType: UITableViewCell.self)) { (row, element, cell) in
-
-                if row == self.titleList.count - 1 {
-                    let el = element as? String
-                    
-                    if let el = el, el.hasPrefix("0x") {
-                        guard let hex = Data(hexString: el.prefix0xRemoved()), let str = String(data: hex, encoding: .utf8) else {
-                            self.dataTextView.text = ""
-                            return
-                        }
-                        self.dataTextView.text = str
-                        
-                    } else {
-                        self.dataTextView.text = el
-                    }
-                    
-                } else {
-                    cell.textLabel?.text = self.titleList[row]
-                    cell.detailTextLabel?.text = "\(element)"
-                }
-                
-            }
+        detailInfo
+            .map { $0.txHash }
+            .bind(to: txHashLabel.rx.text )
             .disposed(by: disposeBag)
         
-        // 1
-//        Observable<String>.just(hashString)
-//            .bind(to: detailViewModel.hash)
-//            .disposed(by: disposeBag)
+        detailInfo
+            .map { String($0.blockHeight.hexToBigUInt()!) }
+            .bind(to: blockHeightLabel.rx.text )
+            .disposed(by: disposeBag)
         
-        // 2
-//        Observable<String>.just(hashString)
-//            .subscribe(detailViewModel.hash)
-//            .disposed(by: disposeBag)
-        // 3
+        detailInfo
+            .map {
+                let date = $0.timestamp.hextoDate()!
+                let formatter = DateFormatter()
+                formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.ZZZ"
+                return formatter.string(from: date)
+            }
+            .bind(to: timestampLabel.rx.text )
+            .disposed(by: disposeBag)
+        
+        detailInfo
+            .map { $0.from }
+            .bind(to: fromLabel.rx.text )
+            .disposed(by: disposeBag)
+        
+        detailInfo
+            .map { $0.to }
+            .bind(to: toLabel.rx.text )
+            .disposed(by: disposeBag)
+        
+        detailInfo
+            .map { String($0.value?.hexToBigUInt() ?? 0) }
+            .bind(to: amountLabel.rx.text )
+            .disposed(by: disposeBag)
+        
+        detailInfo
+            .map { String($0.stepLimit.hexToBigUInt()!) }
+            .bind(to: stepLimit.rx.text )
+            .disposed(by: disposeBag)
+        
+        detailInfo
+            .map { String($0.stepLimit.hexToBigUInt()!) }
+            .bind(to: actualStepLabel.rx.text )
+            .disposed(by: disposeBag)
+        
         detailViewModel.hash.onNext(hashString)
-        
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
