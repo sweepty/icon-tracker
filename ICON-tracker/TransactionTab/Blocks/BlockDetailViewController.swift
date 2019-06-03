@@ -34,14 +34,10 @@ class BlockDetailViewController: UIViewController, UITableViewDelegate {
     
     var height = UInt64()
     
-    var info = [Response.Block]()
-    var txList = [Response.Block.ConfirmedTransactionList]()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.rx.setDelegate(self).disposed(by: disposeBag)
-        
         tableView.rowHeight = 120
         
         setupBind()
@@ -70,35 +66,27 @@ class BlockDetailViewController: UIViewController, UITableViewDelegate {
         
         blockInfo
             .subscribe(onNext: { (blockInfo) in
-                self.info.removeAll()
-                self.info.append(blockInfo)
+                self.blockViewModel.txList.onNext(blockInfo.confirmedTransactionList)
                 
-                self.txList.removeAll()
-                self.txList = blockInfo.confirmedTransactionList
-                
-                self.blockViewModel.txList.onNext(self.txList)
-                
-                let firstBlock = self.info.first
-                self.hashLabel.text = firstBlock?.blockHash
-                self.peerIdLabel.text = firstBlock?.peerId
+                self.hashLabel.text = blockInfo.blockHash
+                self.peerIdLabel.text = blockInfo.peerId
                 
                 var amount: BigUInt = BigUInt()
                 var fee: Double = Double()
-                if let list = firstBlock?.confirmedTransactionList {
-                    for i in list {
-                        if let amountValue = i.value {
-                            amount += amountValue.hexToBigUInt()!
-                        }
-                        if let feeValue = i.fee {
-                            fee += feeValue.hextoDouble()
-                        }
+                
+                let list = blockInfo.confirmedTransactionList
+                
+                for i in list {
+                    if let amountValue = i.value {
+                        amount += amountValue.hexToBigUInt()!
+                    }
+                    if let feeValue = i.fee {
+                        fee += feeValue.hextoDouble()
                     }
                 }
-//                self.heightLabel.text = "\(firstBlock?.height)"
                 self.amountLabel.text = "\(amount)"
-                self.timestampLabel.text = firstBlock?.timeStamp.toDateString()
+                self.timestampLabel.text = blockInfo.timeStamp.toDateString()
                 self.txfeeLabel.text = "\(fee)"
-                
             })
             .disposed(by: disposeBag)
         
@@ -110,17 +98,10 @@ class BlockDetailViewController: UIViewController, UITableViewDelegate {
             })
             .disposed(by: disposeBag)
         
-        let heightModel = blockViewModel.height.share(replay: 1)
-        
-        heightModel
-            .asObservable()
-            .map { String($0) }
+        blockInfo
+            .map{ String($0.height) }
             .bind(to: self.heightLabel.rx.text)
             .disposed(by: disposeBag)
-        
-        
-        blockViewModel.height.onNext(height)
-    
         
         let dataSource = RxTableViewSectionedReloadDataSource<SectionOfCustomData> (
             configureCell: { dataSource, tableView, indexPath, item in
@@ -136,19 +117,17 @@ class BlockDetailViewController: UIViewController, UITableViewDelegate {
                 cell.icxView.layer.cornerRadius = 5
                 
                 return cell
-                
-        }, titleForHeaderInSection: { _, _ in
-            return "Transactions \(self.txList.count)"
+
+        }, titleForHeaderInSection: { datasource, index in
+            return "Transactions \(datasource[index].items.count)"
         })
         
-        heightModel
-            .flatMapLatest { (height) -> Observable<[SectionOfCustomData]> in
-                let sections = [SectionOfCustomData(items: self.txList)]
-                return Observable.just(sections)
-            }
+        blockViewModel.txList
+            .map { [SectionOfCustomData(items: $0)] }
             .bind(to: self.tableView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         
+        blockViewModel.height.onNext(height)
     }
     
     /*
