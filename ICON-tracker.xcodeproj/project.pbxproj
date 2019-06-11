@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -15,6 +15,7 @@
 		1B1EA6372256E2A600371478 /* ChooseNetwork.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B1EA6362256E2A600371478 /* ChooseNetwork.storyboard */; };
 		1B1EA6392256E45300371478 /* ChooseNetworkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1EA6382256E45300371478 /* ChooseNetworkViewController.swift */; };
 		1B1EA63D2256E49500371478 /* ChooseNetworkViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1EA63C2256E49500371478 /* ChooseNetworkViewModel.swift */; };
+		1B2291EF22AF53E40099F6B1 /* Pods-ICON-tracker-acknowledgements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1B2291EE22AF53E40099F6B1 /* Pods-ICON-tracker-acknowledgements.plist */; };
 		1B244E86224CA01700415791 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B244E85224CA01700415791 /* AppDelegate.swift */; };
 		1B244E8B224CA01700415791 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B244E89224CA01700415791 /* Main.storyboard */; };
 		1B244E8D224CA01A00415791 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1B244E8C224CA01A00415791 /* Assets.xcassets */; };
@@ -53,6 +54,7 @@
 		1B1EA6362256E2A600371478 /* ChooseNetwork.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ChooseNetwork.storyboard; sourceTree = "<group>"; };
 		1B1EA6382256E45300371478 /* ChooseNetworkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseNetworkViewController.swift; sourceTree = "<group>"; };
 		1B1EA63C2256E49500371478 /* ChooseNetworkViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseNetworkViewModel.swift; sourceTree = "<group>"; };
+		1B2291EE22AF53E40099F6B1 /* Pods-ICON-tracker-acknowledgements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Pods-ICON-tracker-acknowledgements.plist"; sourceTree = "<group>"; };
 		1B244E82224CA01700415791 /* ICON-tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ICON-tracker.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1B244E85224CA01700415791 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1B244E8A224CA01700415791 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 		1B244E84224CA01700415791 /* ICON-tracker */ = {
 			isa = PBXGroup;
 			children = (
+				1B2291EE22AF53E40099F6B1 /* Pods-ICON-tracker-acknowledgements.plist */,
 				1B244E89224CA01700415791 /* Main.storyboard */,
 				1BEFED21224DB5DB00CCDD1F /* Networking */,
 				1BF347782271ACCB00FDE66F /* SettingTab */,
@@ -304,6 +307,7 @@
 				1B244E8B224CA01700415791 /* Main.storyboard in Resources */,
 				1B1EA6372256E2A600371478 /* ChooseNetwork.storyboard in Resources */,
 				1BD290EB226DB20900C5855E /* TransactionDetail.storyboard in Resources */,
+				1B2291EF22AF53E40099F6B1 /* Pods-ICON-tracker-acknowledgements.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -316,38 +320,11 @@
 			files = (
 			);
 			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ICON-tracker/Pods-ICON-tracker-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/BigInt/BigInt.framework",
-				"${BUILT_PRODUCTS_DIR}/Charts/Charts.framework",
-				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/Differentiator/Differentiator.framework",
-				"${BUILT_PRODUCTS_DIR}/ICONKit/ICONKit.framework",
-				"${BUILT_PRODUCTS_DIR}/Result/Result.framework",
-				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
-				"${BUILT_PRODUCTS_DIR}/RxDataSources/RxDataSources.framework",
-				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/RxTheme/RxTheme.framework",
-				"${BUILT_PRODUCTS_DIR}/scrypt/scrypt.framework",
-				"${BUILT_PRODUCTS_DIR}/secp256k1_ios/secp256k1_ios.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-ICON-tracker/Pods-ICON-tracker-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BigInt.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Charts.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Differentiator.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ICONKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxDataSources.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxTheme.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/scrypt.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/secp256k1_ios.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-ICON-tracker/Pods-ICON-tracker-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

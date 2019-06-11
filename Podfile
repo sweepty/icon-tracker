@@ -12,5 +12,5 @@ target 'ICON-tracker' do
   pod 'RxDataSources', '~> 3.0'
   pod 'RxTheme', '~> 3.0'
   pod 'Charts'
-
+  pod 'AcknowList'
 end

@@ -10,6 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 import RxTheme
+import AcknowList
 
 class SettingTabViewController: UIViewController {
 
@@ -67,7 +68,9 @@ class SettingTabViewController: UIViewController {
                     let networkVC = UIStoryboard(name: "ChooseNetwork", bundle: nil).instantiateViewController(withIdentifier: "ChooseNetwork") as! ChooseNetworkViewController
                     self?.navigationController?.pushViewController(networkVC.self, animated: true)
                     self?.prepareNetworkListViewController(networkVC)
-                    
+                case 2:
+                    let viewController = AcknowListViewController()
+                    self?.navigationController?.pushViewController(viewController.self, animated: true)
                 default:
                     return
                 }

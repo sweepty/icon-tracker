@@ -15,6 +15,6 @@ class SettingViewModel {
     let settingList: Observable<[String]>
 
     init() {
-        self.settingList = Observable.just(["네트워크 설정", "Dark mode"])
+        self.settingList = Observable.just(["네트워크 설정", "Dark mode", "오픈소스 라이센스"])
     }
 }
