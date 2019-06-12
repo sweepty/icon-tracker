@@ -98,7 +98,6 @@ class ChildBViewController: UIViewController, UITableViewDelegate {
         viewModel.transactionItems
             .observeOn(MainScheduler.instance)
             .do(onNext: { [weak self] _ in
-                print("thread - \(Thread.current)")
                 self?.refreshControl.endRefreshing()
             })
             .bind(to: tableView.rx.items(cellIdentifier: "cell", cellType: ChildBTableViewCell.self)) { (_, transaction, cell) in
@@ -110,6 +109,8 @@ class ChildBViewController: UIViewController, UITableViewDelegate {
 
                 if transaction.state == 0 {
                     cell.statusView.backgroundColor = UIColor.red
+                } else {
+                    cell.statusView.backgroundColor = UIColor.blue
                 }
                 cell.txHashLabel?.text = transaction.txHash
                 cell.valueLabel?.text = transaction.amount

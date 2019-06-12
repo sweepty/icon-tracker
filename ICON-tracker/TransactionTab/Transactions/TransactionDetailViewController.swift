@@ -83,6 +83,62 @@ class TransactionDetailViewController: UIViewController {
             .bind(to: actualStepLabel.rx.text )
             .disposed(by: disposeBag)
         
+        detailInfo
+            .map { $0.data }
+            .subscribe(onNext: { (dataType) in
+                if let data = dataType {
+                    switch data {
+                    case .string(let string):
+                        let test = string.prefix0xRemoved()
+                        let data = Data(hex: test)
+                        
+                        // encode data to base64
+                        let encodedAsData = data.base64EncodedString(options: .lineLength64Characters)
+                        
+                        // decode
+                        let dataDecoded: Data = Data(base64Encoded: encodedAsData, options: Data.Base64DecodingOptions.ignoreUnknownCharacters)!
+                        // data:image/jpeg;base64~~~~~~~~~
+                        // 잘됨;
+                        guard let str = String(data: dataDecoded, encoding: .utf8) else {
+                            return
+                        }
+                        if str.hasPrefix("data:image/jpeg;base64") {
+                            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: self.dataView.frame.width, height: self.dataView.frame.height))
+                            imageView.image = str.base64ToImage()
+                            self.view.addSubview(imageView)
+                            imageView.topAnchor.constraint(equalTo: self.dataView.topAnchor).isActive = true
+                            imageView.leadingAnchor.constraint(equalTo: self.dataView.leadingAnchor).isActive = true
+                            
+                        } else if str.hasPrefix("data:image/gif;base64") {
+                            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: self.dataView.frame.width, height: self.dataView.frame.height))
+                            imageView.image = str.base64ToImage()
+                            self.view.addSubview(imageView)
+                            imageView.topAnchor.constraint(equalTo: self.dataView.topAnchor).isActive = true
+                            imageView.leadingAnchor.constraint(equalTo: self.dataView.leadingAnchor).isActive = true
+                            
+                        } else {
+                            let textView = UITextView(frame: CGRect(x: 0, y: 0, width: self.dataView.frame.width, height: self.dataView.frame.height))
+                            textView.text = str
+                            self.dataView.addSubview(textView)
+                            textView.topAnchor.constraint(equalTo: self.dataView.topAnchor).isActive = true
+                            textView.leadingAnchor.constraint(equalTo: self.dataView.leadingAnchor).isActive = true
+                        }
+                    case .dataInfo(let dataInfo):
+                        let textView = UITextView(frame: CGRect(x: 0, y: 0, width: self.dataView.frame.width, height: self.dataView.frame.height))
+                        textView.text = "method: \(dataInfo.method)\nparams: \(dataInfo.params)"
+                        self.dataView.addSubview(textView)
+                        textView.topAnchor.constraint(equalTo: self.dataView.topAnchor).isActive = true
+                        textView.leadingAnchor.constraint(equalTo: self.dataView.leadingAnchor).isActive = true
+                    }
+                } else {
+                    let emptyView = UIView(frame: CGRect(x: 0, y: 0, width: self.dataView.frame.width, height: self.dataView.frame.height))
+                    emptyView.backgroundColor = .white
+                    self.dataView.addSubview(emptyView)
+                    emptyView.topAnchor.constraint(equalTo: self.dataView.topAnchor).isActive = true
+                    emptyView.leadingAnchor.constraint(equalTo: self.dataView.leadingAnchor).isActive = true
+                }
+            }).disposed(by: disposeBag)
+        
         detailViewModel.hash.onNext(hashString)
     }
 }

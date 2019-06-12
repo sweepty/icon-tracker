@@ -44,9 +44,12 @@ class BlockDetailViewController: UIViewController, UITableViewDelegate {
     }
     
     func setupBind() {
-        blockViewModel.height
+        let heightModel = blockViewModel.height.share(replay: 1)
+        
+        heightModel
             .subscribe(onNext: { (x) in
                 print("높이 \(x)")
+                self.height = x
             })
             .disposed(by: disposeBag)
         
@@ -66,8 +69,6 @@ class BlockDetailViewController: UIViewController, UITableViewDelegate {
         
         blockInfo
             .subscribe(onNext: { (blockInfo) in
-                self.blockViewModel.txList.onNext(blockInfo.confirmedTransactionList)
-                
                 self.hashLabel.text = blockInfo.blockHash
                 self.peerIdLabel.text = blockInfo.peerId
                 

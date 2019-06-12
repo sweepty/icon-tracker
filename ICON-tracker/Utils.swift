@@ -82,6 +82,15 @@ extension Data {
         self = data
     }
 }
+extension String {
+    // convert base64
+    public func base64ToImage() -> UIImage? {
+        if let url = URL(string: self), let data = try? Data(contentsOf: url),let image = UIImage(data: data) {
+            return image
+        }
+        return nil
+    }
+}
 
 extension Double {
     public func toDateString() -> String {
@@ -105,6 +114,17 @@ extension Double {
             formatter.maximumUnitCount = 1
             let daysString = formatter.string(from: date, to: now)
             return daysString!
+        }
+    }
+}
+
+@IBDesignable
+class CircleView: UIView {
+    @IBInspectable var cornerRadius: Double {
+        get {
+            return Double(self.layer.cornerRadius)
+        }set {
+            self.layer.cornerRadius = CGFloat(self.layer.bounds.width/2)
         }
     }
 }

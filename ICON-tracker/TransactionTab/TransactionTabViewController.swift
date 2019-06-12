@@ -18,10 +18,6 @@ class TransactionTabViewController: UIViewController, ChartViewDelegate {
     
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     
-//    private let refreshControl = UIRefreshControl()
-    
-//    @IBOutlet weak var lineChartView: LineChartView!
-    
     @IBOutlet weak var containerView: UIView!
     
     var chartInfoResponse = [ChartInfo]()
