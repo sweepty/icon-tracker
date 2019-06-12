@@ -55,7 +55,7 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   AcknowList: 06fde3319971dfd517ea1b1c194d78eb8cd774a2
   BigInt: 2aad1a9942dc932ec8b84290d2c564a3d76f97ab
-  Charts: ec1f57f9340054155691e84d4544a1d239d382c5
+  Charts: e0dd4cd8f257bccf98407b58183ddca8e8d5b578
   CryptoSwift: ad5208dd2aae0a764ea4ce2c2d34bd067cae67f0
   Differentiator: be49ca3408f0ecfc761e4c7763d20c62be01b9ad
   ICONKit: 1e73834efe4a73f0e9574688b7b17b098948da33
