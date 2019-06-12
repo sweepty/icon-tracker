@@ -23,11 +23,11 @@
 <table width="100%" border="0">
   <tr>    
   <td>
-    <img src="https://user-images.githubusercontent.com/29784606/59338045-a1959600-8d3c-11e9-9d70-191dc4585fb0.png" alt="" align="left" />
-    <p align="center">Transaction chart &amp; Block list</p>
+    <img src="https://user-images.githubusercontent.com/29784606/59344739-a3198b00-8d49-11e9-85e1-19a43df9bb85.png" alt="" align="left" />
+    <p align="center">Tx Chart &amp; Block list</p>
     </td>
   <td>
-    <img src="https://user-images.githubusercontent.com/29784606/59338079-ace8c180-8d3c-11e9-93e3-fc34327b1859.png" alt="" align="center" />
+    <img src="https://user-images.githubusercontent.com/29784606/59344749-a4e34e80-8d49-11e9-9969-69047bc5dec9.png" alt="" align="center" />
     <p align="center">Block detail</p>
     </td>
   </tr>
@@ -42,6 +42,7 @@
   </td>
   </tr>
 </table>
+
 
 ## License
 
