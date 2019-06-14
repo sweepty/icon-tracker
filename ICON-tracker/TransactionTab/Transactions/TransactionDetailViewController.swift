@@ -85,11 +85,32 @@ class TransactionDetailViewController: UIViewController {
         
         detailInfo
             .map { $0.data }
-            .subscribe(onNext: { (dataType) in
-                if let data = dataType {
+            .subscribe(onNext: { (data) in
+                if let data = data {
                     switch data {
-                    case .string(let string):
-                        let test = string.prefix0xRemoved()
+                    case .call(let call):
+                        let textView = UITextView(frame: CGRect(x: 0, y: 0, width: self.dataView.bounds.width, height: self.dataView.bounds.height))
+                        textView.font = .systemFont(ofSize: 15)
+                        textView.text = "\"method\": \"\(call.method)\"\n"
+                        if let params = call.params {
+                            textView.text.append(contentsOf: "\n\"params\"\n")
+                            for i in params {
+                                textView.text.append(contentsOf: "\"\(i.key)\": \"\(i.value)\"\n")
+                            }
+                        }
+                        self.dataView.addSubview(textView)
+                        textView.topAnchor.constraint(equalTo: self.dataView.topAnchor).isActive = true
+                        textView.leadingAnchor.constraint(equalTo: self.dataView.leadingAnchor).isActive = true
+                        
+                    case .deploy(let deploy):
+                        let textView = UITextView(frame: CGRect(x: 0, y: 0, width: self.dataView.bounds.width, height: self.dataView.bounds.height))
+                        textView.font = .systemFont(ofSize: 15)
+                        textView.text = "\"contentType\": \"\(deploy.contentType)\"\n\"content\": \"\(deploy.content)\"\n\"params\": \"\(deploy.params!)\""
+                        self.dataView.addSubview(textView)
+                        textView.topAnchor.constraint(equalTo: self.dataView.topAnchor).isActive = true
+                        textView.leadingAnchor.constraint(equalTo: self.dataView.leadingAnchor).isActive = true
+                    case .message(let message):
+                        let test = message.prefix0xRemoved()
                         let data = Data(hex: test)
                         
                         // encode data to base64
@@ -97,20 +118,18 @@ class TransactionDetailViewController: UIViewController {
                         
                         // decode
                         let dataDecoded: Data = Data(base64Encoded: encodedAsData, options: Data.Base64DecodingOptions.ignoreUnknownCharacters)!
-                        // data:image/jpeg;base64~~~~~~~~~
-                        // 잘됨;
                         guard let str = String(data: dataDecoded, encoding: .utf8) else {
                             return
                         }
                         if str.hasPrefix("data:image/jpeg;base64") {
-                            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: self.dataView.frame.width, height: self.dataView.frame.height))
+                            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: self.dataView.bounds.width, height: self.dataView.bounds.height))
                             imageView.image = str.base64ToImage()
-                            self.view.addSubview(imageView)
+                            self.dataView.addSubview(imageView)
                             imageView.topAnchor.constraint(equalTo: self.dataView.topAnchor).isActive = true
                             imageView.leadingAnchor.constraint(equalTo: self.dataView.leadingAnchor).isActive = true
                             
                         } else if str.hasPrefix("data:image/gif;base64") {
-                            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: self.dataView.frame.width, height: self.dataView.frame.height))
+                            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: self.dataView.bounds.width, height: self.dataView.bounds.height))
                             imageView.image = str.base64ToImage()
                             self.view.addSubview(imageView)
                             imageView.topAnchor.constraint(equalTo: self.dataView.topAnchor).isActive = true
@@ -118,24 +137,13 @@ class TransactionDetailViewController: UIViewController {
                             
                         } else {
                             let textView = UITextView(frame: CGRect(x: 0, y: 0, width: self.dataView.frame.width, height: self.dataView.frame.height))
+                            textView.font = .systemFont(ofSize: 15)
                             textView.text = str
                             self.dataView.addSubview(textView)
                             textView.topAnchor.constraint(equalTo: self.dataView.topAnchor).isActive = true
                             textView.leadingAnchor.constraint(equalTo: self.dataView.leadingAnchor).isActive = true
                         }
-                    case .dataInfo(let dataInfo):
-                        let textView = UITextView(frame: CGRect(x: 0, y: 0, width: self.dataView.frame.width, height: self.dataView.frame.height))
-                        textView.text = "method: \(dataInfo.method)\nparams: \(dataInfo.params)"
-                        self.dataView.addSubview(textView)
-                        textView.topAnchor.constraint(equalTo: self.dataView.topAnchor).isActive = true
-                        textView.leadingAnchor.constraint(equalTo: self.dataView.leadingAnchor).isActive = true
                     }
-                } else {
-                    let emptyView = UIView(frame: CGRect(x: 0, y: 0, width: self.dataView.frame.width, height: self.dataView.frame.height))
-                    emptyView.backgroundColor = .white
-                    self.dataView.addSubview(emptyView)
-                    emptyView.topAnchor.constraint(equalTo: self.dataView.topAnchor).isActive = true
-                    emptyView.leadingAnchor.constraint(equalTo: self.dataView.leadingAnchor).isActive = true
                 }
             }).disposed(by: disposeBag)
         
