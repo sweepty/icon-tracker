@@ -114,8 +114,6 @@ class ChildAViewController: UIViewController, UITableViewDelegate {
                 cell.textLabel?.theme.textColor = themeService.attrStream { $0.textColor }
                 cell.detailTextLabel?.theme.textColor = themeService.attrStream { $0.textColor }
                 
-                cell.layer.cornerRadius = 10
-                
                 cell.heightLabel?.text = "\(block.height)"
                 cell.hashLabel?.text = block.hash
                 cell.txCountLabel?.text = "\(block.txCount)"

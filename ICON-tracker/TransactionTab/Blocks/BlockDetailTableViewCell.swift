@@ -17,7 +17,6 @@ class BlockDetailTableViewCell: UITableViewCell {
     @IBOutlet weak var toLabel: UILabel!
     @IBOutlet weak var amountLabel: UILabel!
     
-    @IBOutlet weak var txHashTitleView: UIView!
     @IBOutlet weak var toTtitleView: UIView!
     @IBOutlet weak var fromTitleView: UIView!
     @IBOutlet weak var icxView: UIView!

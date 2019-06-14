@@ -112,7 +112,6 @@ class BlockDetailViewController: UIViewController, UITableViewDelegate {
                 cell.toLabel.text = item.to
                 cell.amountLabel.text = "\(item.value?.hexToBigUInt()?.convertToICX() ?? "0")"
                 
-                cell.txHashTitleView.layer.cornerRadius = 5
                 cell.fromTitleView.layer.cornerRadius = 5
                 cell.toTtitleView.layer.cornerRadius = 5
                 cell.icxView.layer.cornerRadius = 5
@@ -131,14 +130,8 @@ class BlockDetailViewController: UIViewController, UITableViewDelegate {
         blockViewModel.height.onNext(height)
     }
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.tableView.deselectRow(at: indexPath, animated: true)
     }
-    */
 
 }
