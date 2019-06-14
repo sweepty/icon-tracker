@@ -27,22 +27,31 @@
     <p align="center">Tx Chart &amp; Block list</p>
     </td>
   <td>
-    <img src="https://user-images.githubusercontent.com/29784606/59344749-a4e34e80-8d49-11e9-9969-69047bc5dec9.png" alt="" align="center" />
+    <img src="https://user-images.githubusercontent.com/29784606/59495450-3c6fab00-8eca-11e9-9655-9b57180f6bee.png" alt="" align="center" />
     <p align="center">Block detail</p>
     </td>
   </tr>
   <tr>
-  <td>
+   <td>
     <img src="https://user-images.githubusercontent.com/29784606/59337196-09e37800-8d3b-11e9-8867-f80d999ad72f.png" alt="" align="right"/>
     <p align="center">Transaction list</p>
-  </td>
-  <td>
-    <img src="https://user-images.githubusercontent.com/29784606/59337143-f0dac700-8d3a-11e9-8df3-1068fec687f6.png" alt="" align="left" />
-    <p align="center">Transaction detail</p>
-  </td>
+   </td>
+   <td>
+    <img src="https://user-images.githubusercontent.com/29784606/59496528-91142580-8ecc-11e9-8150-d9c7e8d4d6e1.png" alt="" align="right"/>
+    <p align="center">Network List</p>
+   </td>
+  </tr>
+  <tr>
+   <td>
+    <img src="https://user-images.githubusercontent.com/29784606/59496339-2b279e00-8ecc-11e9-8450-1f52d24f4947.png" alt="" align="left" />
+    <p align="center">Transaction detail 1 </p>
+   </td>
+   <td>
+    <img src="https://user-images.githubusercontent.com/29784606/59496458-6e820c80-8ecc-11e9-9742-28dccacdb6f7.png" alt="" align="left" />
+    <p align="center">Transaction detail 2 </p>
+   </td>
   </tr>
 </table>
-
 
 ## License
 
