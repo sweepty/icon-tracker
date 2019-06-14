@@ -93,9 +93,9 @@ class TransactionDetailViewController: UIViewController {
                         textView.font = .systemFont(ofSize: 15)
                         textView.text = "\"method\": \"\(call.method)\"\n"
                         if let params = call.params {
-                            textView.text.append(contentsOf: "\n\"params\"\n")
+                            textView.text.append(contentsOf: "\n\"params\":\n")
                             for i in params {
-                                textView.text.append(contentsOf: "\"\(i.key)\": \"\(i.value)\"\n")
+                                textView.text.append(contentsOf: "\t\"\(i.key)\": \"\(i.value)\"\n")
                             }
                         }
                         self.dataView.addSubview(textView)
