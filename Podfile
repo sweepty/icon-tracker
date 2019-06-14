@@ -6,7 +6,7 @@ target 'ICON-tracker' do
   use_frameworks!
 
   # Pods for ICON-tracker
-  pod 'ICONKit', '~> 0.3.0'
+  pod 'ICONKit', :git => 'https://github.com/icon-project/ICONKit', :branch => 'develop'
   pod 'RxSwift', '~> 4.0'
   pod 'RxCocoa', '~> 4.0'
   pod 'RxDataSources', '~> 3.0'

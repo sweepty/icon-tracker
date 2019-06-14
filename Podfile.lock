@@ -30,7 +30,7 @@ PODS:
 DEPENDENCIES:
   - AcknowList
   - Charts
-  - ICONKit (~> 0.3.0)
+  - ICONKit (from `https://github.com/icon-project/ICONKit`, branch `develop`)
   - RxCocoa (~> 4.0)
   - RxDataSources (~> 3.0)
   - RxSwift (~> 4.0)
@@ -43,7 +43,6 @@ SPEC REPOS:
     - Charts
     - CryptoSwift
     - Differentiator
-    - ICONKit
     - Result
     - RxCocoa
     - RxDataSources
@@ -51,6 +50,16 @@ SPEC REPOS:
     - RxTheme
     - scrypt
     - secp256k1_ios
+
+EXTERNAL SOURCES:
+  ICONKit:
+    :branch: develop
+    :git: https://github.com/icon-project/ICONKit
+
+CHECKOUT OPTIONS:
+  ICONKit:
+    :commit: 4a602187389665aeb20011b8f7984cc666bde1a3
+    :git: https://github.com/icon-project/ICONKit
 
 SPEC CHECKSUMS:
   AcknowList: 06fde3319971dfd517ea1b1c194d78eb8cd774a2
@@ -67,6 +76,6 @@ SPEC CHECKSUMS:
   scrypt: 3fe5b1a3b0976f97cd87488673a8f7c65708cc84
   secp256k1_ios: ac9ef04e761f43c58012b28548afa91493761f17
 
-PODFILE CHECKSUM: b51ecb9f7f2ff3a7832f19a7461040f535394589
+PODFILE CHECKSUM: deb917e4d87f3dd50de29adc29b0dfbf567dfe49
 
 COCOAPODS: 1.7.1
