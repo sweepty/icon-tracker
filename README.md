@@ -6,11 +6,10 @@
 
 ## Features
 
-- [x] Daily transaction chart.
-- [x] Change networks.
-- [x] Block ?
-- [x] Transaction ?
-- [ ] Transaction Details
+- Daily transaction chart.
+- Change networks.
+- Block List
+- Transaction List
 
 ## Tech
 
