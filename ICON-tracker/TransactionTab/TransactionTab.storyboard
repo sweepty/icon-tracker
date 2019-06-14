@@ -18,15 +18,20 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wjt-6D-HLn">
-                                <rect key="frame" x="0.0" y="88" width="375" height="709"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wjt-6D-HLn">
+                                <rect key="frame" x="0.0" y="88" width="375" height="641"/>
                                 <connections>
                                     <segue destination="D1D-Fk-nx8" kind="embed" id="MaJ-cz-ceU"/>
                                 </connections>
                             </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="wjt-6D-HLn" firstAttribute="top" secondItem="9ex-Ed-lNk" secondAttribute="top" id="UJv-zu-ucI"/>
+                            <constraint firstItem="wjt-6D-HLn" firstAttribute="leading" secondItem="9ex-Ed-lNk" secondAttribute="leading" id="XXs-m5-lGh"/>
+                            <constraint firstItem="9ex-Ed-lNk" firstAttribute="trailing" secondItem="wjt-6D-HLn" secondAttribute="trailing" id="nt8-6U-KrU"/>
+                            <constraint firstItem="wjt-6D-HLn" firstAttribute="bottom" secondItem="9ex-Ed-lNk" secondAttribute="bottom" id="vGS-vX-QGf"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="9ex-Ed-lNk"/>
                     </view>
                     <navigationItem key="navigationItem" id="pzl-A5-bdi">
@@ -76,7 +81,7 @@
             <objects>
                 <viewController id="D1D-Fk-nx8" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="3OV-B9-HVE">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="709"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="641"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="Wwv-RI-Za0"/>
