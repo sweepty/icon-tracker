@@ -48,6 +48,7 @@ class ChildBViewController: UIViewController, UITableViewDelegate {
         
         lineChartView.xAxis.labelPosition = .bottom
         lineChartView.xAxis.labelTextColor = .white
+        lineChartView.xAxis.valueFormatter = self
         lineChartView.leftAxis.labelTextColor = .white
         lineChartView.rightAxis.enabled = false
         lineChartView.legend.enabled = false
@@ -189,4 +190,20 @@ class ChildBViewController: UIViewController, UITableViewDelegate {
     }
     */
 
+}
+extension ChildBViewController: IAxisValueFormatter {
+    func stringForValue(_ value: Double, axis: AxisBase?) -> String {
+        let target: String = chartInfoResponse[Int(value)].targetDate
+        let date = mmdd(dateString: target)
+        return date
+    }
+    
+    func mmdd(dateString: String) -> String {
+        let date = dateString.toDate()
+        
+        let dateformatter = DateFormatter()
+        dateformatter.dateFormat = "MMM d"
+        let result = dateformatter.string(from: date)
+        return result
+    }
 }
