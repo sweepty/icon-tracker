@@ -21,13 +21,14 @@ struct TransactionBlock: Decodable {
     var txHash: String
     var height: Int
     var createDate: String
-    var fromAddr: String
-    var toAddr: String
+    var fromAddr: String?
+    var toAddr: String?
     var txType: String
-    var dataType: String
+    var dataType: String?
     var amount: String
     var fee: String
     var state: Int
+    var errorMsg: String?
     var targetContractAddr: String?
-    var id: Int
+    var id: Int?
 }

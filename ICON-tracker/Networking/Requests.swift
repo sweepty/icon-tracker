@@ -73,7 +73,7 @@ class Requests {
         case .success(let value):
             return Observable.just(value)
         case .failure(let error):
-            Log.Error(error.errorDescription)
+            Log.Error(error)
             return Observable.error(error)
         }
     }
