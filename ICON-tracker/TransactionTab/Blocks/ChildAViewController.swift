@@ -87,9 +87,6 @@ class ChildAViewController: UIViewController, UITableViewDelegate {
     }
     
     func setupBindings() {
-        // theme
-        view.theme.backgroundColor = themeService.attrStream { $0.backgroundColor }
-        
         viewModel.values.asObservable()
             .subscribe(onNext: { (x) in
                 // 차트 데이터 변경
@@ -109,10 +106,6 @@ class ChildAViewController: UIViewController, UITableViewDelegate {
             .observeOn(MainScheduler.instance)
             .do(onNext: { [weak self] _ in self?.refreshControl.endRefreshing() })
             .bind(to: tableView.rx.items(cellIdentifier: "cell", cellType: ChildATableViewCell.self)) { (_, block, cell) in
-                
-                cell.theme.backgroundColor = themeService.attrStream { $0.backgroundColor }
-                cell.textLabel?.theme.textColor = themeService.attrStream { $0.textColor }
-                cell.detailTextLabel?.theme.textColor = themeService.attrStream { $0.textColor }
                 
                 cell.heightLabel?.text = "\(block.height)"
                 cell.hashLabel?.text = block.hash

@@ -17,9 +17,6 @@ PODS:
     - RxCocoa (~> 4.0)
     - RxSwift (~> 4.0)
   - RxSwift (4.5.0)
-  - RxTheme (3.3.0):
-    - RxCocoa (>= 4.4.2, ~> 4.4)
-    - RxSwift (>= 4.4.2, ~> 4.4)
   - secp256k1_swift (1.0.3)
 
 DEPENDENCIES:
@@ -29,7 +26,6 @@ DEPENDENCIES:
   - RxCocoa (~> 4.0)
   - RxDataSources (~> 3.0)
   - RxSwift (~> 4.0)
-  - RxTheme (~> 3.0)
 
 SPEC REPOS:
   trunk:
@@ -41,7 +37,6 @@ SPEC REPOS:
     - RxCocoa
     - RxDataSources
     - RxSwift
-    - RxTheme
     - secp256k1_swift
 
 EXTERNAL SOURCES:
@@ -64,9 +59,8 @@ SPEC CHECKSUMS:
   RxCocoa: cbf70265dc65a981d4ac982e513c10cf23df24a0
   RxDataSources: a843bad90c29817f5923ec8163f4af2de084ceb3
   RxSwift: f172070dfd1a93d70a9ab97a5a01166206e1c575
-  RxTheme: 40fdcdeba539402beface070d8472e8d0db78d66
   secp256k1_swift: 4fc5c4b2d2c6d21ee8ccb868cdc92da12f38bed9
 
-PODFILE CHECKSUM: deb917e4d87f3dd50de29adc29b0dfbf567dfe49
+PODFILE CHECKSUM: 49b12c591f623888853dfba36899cf4843eaa347
 
 COCOAPODS: 1.8.1

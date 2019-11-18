@@ -19,7 +19,6 @@ class SettingTabTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        textLabel?.theme.textColor = themeService.attrStream { $0.textColor }
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

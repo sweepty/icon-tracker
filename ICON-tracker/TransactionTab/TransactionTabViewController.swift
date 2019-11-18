@@ -40,8 +40,6 @@ class TransactionTabViewController: UIViewController, ChartViewDelegate {
     }
     
     func setupBindings() {
-        // theme        
-        view.theme.backgroundColor = themeService.attrStream { $0.backgroundColor }
         
         segmentedControl.rx.value
             .bind(to: viewModel.segmentedValue)

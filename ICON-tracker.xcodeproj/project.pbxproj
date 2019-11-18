@@ -11,7 +11,6 @@
 		1B1DA159225C3D1900338383 /* SettingTab.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B1DA158225C3D1900338383 /* SettingTab.storyboard */; };
 		1B1DA15C225C3E4000338383 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1DA15B225C3E4000338383 /* SettingViewModel.swift */; };
 		1B1DA15E225C488D00338383 /* SettingTabTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1DA15D225C488D00338383 /* SettingTabTableViewCell.swift */; };
-		1B1DA160225C69C700338383 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1DA15F225C69C700338383 /* Theme.swift */; };
 		1B1EA6372256E2A600371478 /* ChooseNetwork.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B1EA6362256E2A600371478 /* ChooseNetwork.storyboard */; };
 		1B1EA6392256E45300371478 /* ChooseNetworkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1EA6382256E45300371478 /* ChooseNetworkViewController.swift */; };
 		1B1EA63D2256E49500371478 /* ChooseNetworkViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1EA63C2256E49500371478 /* ChooseNetworkViewModel.swift */; };
@@ -50,7 +49,6 @@
 		1B1DA158225C3D1900338383 /* SettingTab.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SettingTab.storyboard; sourceTree = "<group>"; };
 		1B1DA15B225C3E4000338383 /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
 		1B1DA15D225C488D00338383 /* SettingTabTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTabTableViewCell.swift; sourceTree = "<group>"; };
-		1B1DA15F225C69C700338383 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		1B1EA6362256E2A600371478 /* ChooseNetwork.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ChooseNetwork.storyboard; sourceTree = "<group>"; };
 		1B1EA6382256E45300371478 /* ChooseNetworkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseNetworkViewController.swift; sourceTree = "<group>"; };
 		1B1EA63C2256E49500371478 /* ChooseNetworkViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseNetworkViewModel.swift; sourceTree = "<group>"; };
@@ -128,7 +126,6 @@
 				1B244E91224CA01A00415791 /* Info.plist */,
 				1BF335A32251D29700A1F2D8 /* Utils.swift */,
 				1BF335A72251FD9500A1F2D8 /* Logger.swift */,
-				1B1DA15F225C69C700338383 /* Theme.swift */,
 				1BE53B862255AC2800AC6397 /* Support Files */,
 			);
 			path = "ICON-tracker";
@@ -377,7 +374,6 @@
 				1BF335A62251EDD300A1F2D8 /* TrackerResponse.swift in Sources */,
 				1BD290E8226D8A9B00C5855E /* TransactionDetailViewModel.swift in Sources */,
 				1BE0065E227ADFCF00095F25 /* BlockDetailViewModel.swift in Sources */,
-				1B1DA160225C69C700338383 /* Theme.swift in Sources */,
 				1B244E86224CA01700415791 /* AppDelegate.swift in Sources */,
 				1B1DA157225C3CFF00338383 /* SettingTabViewController.swift in Sources */,
 				1BEFED23224DBA2900CCDD1F /* URL.swift in Sources */,

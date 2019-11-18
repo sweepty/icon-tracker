@@ -9,7 +9,6 @@
 import UIKit
 import RxSwift
 import RxCocoa
-import RxTheme
 import AcknowList
 
 class SettingTabViewController: UIViewController {
@@ -24,9 +23,6 @@ class SettingTabViewController: UIViewController {
         super.viewDidLoad()
         
         setupUI()
-        
-        view.theme.backgroundColor = themeService.attrStream { $0.backgroundColor }
-        tableView.theme.backgroundColor = themeService.attrStream { $0.backgroundColor }
     }
     
     func setupUI() {
@@ -50,12 +46,10 @@ class SettingTabViewController: UIViewController {
                 switched
                     .subscribe(onNext: { (value) in
                         UserDefaults.standard.set(value, forKey: "darkmode")
-                        value ? themeService.switch(.dark) : themeService.switch(.light)
                         Log.Debug("스위치가 \(value)로 바뀌었습니다.")
                     })
                     .disposed(by: cell.cellBag)
                 
-                cell.theme.backgroundColor = themeService.attrStream { $0.backgroundColor }
                 
         }.disposed(by: disposeBag)
         

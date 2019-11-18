@@ -78,8 +78,6 @@ class ChildBViewController: UIViewController, UITableViewDelegate {
     }
     
     func setupBindings() {
-        // theme
-        view.theme.backgroundColor = themeService.attrStream { $0.backgroundColor }
         
         viewModel.values.asObservable()
             .subscribe(onNext: { (x) in
@@ -102,11 +100,6 @@ class ChildBViewController: UIViewController, UITableViewDelegate {
                 self?.refreshControl.endRefreshing()
             })
             .bind(to: tableView.rx.items(cellIdentifier: "cell", cellType: ChildBTableViewCell.self)) { (_, transaction, cell) in
-                
-                cell.theme.backgroundColor = themeService.attrStream { $0.backgroundColor }
-                cell.txHashLabel?.theme.textColor = themeService.attrStream { $0.textColor }
-                cell.valueLabel?.theme.textColor = themeService.attrStream { $0.textColor }
-                cell.heightLabel?.theme.textColor = themeService.attrStream { $0.textColor }
 
                 if transaction.state == 0 {
                     cell.statusView.backgroundColor = UIColor.red
