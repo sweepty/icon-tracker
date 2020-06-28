@@ -15,10 +15,6 @@ class ChildAViewController: UIViewController, UITableViewDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     
-    @IBOutlet weak var usdPriceLabel: UILabel!
-    @IBOutlet weak var totalSupplyLabel: UILabel!
-    @IBOutlet weak var lineChartView: LineChartView!
-    
     private let refreshControl = UIRefreshControl()
     
     var chartInfoResponse = [ChartInfo]()
@@ -52,14 +48,14 @@ class ChildAViewController: UIViewController, UITableViewDelegate {
     func setupChartView() {
         // chartView
 //        lineChartView.delegate = self
-        lineChartView.pinchZoomEnabled = false
-        lineChartView.setScaleEnabled(false)
-        lineChartView.xAxis.labelPosition = .bottom
-        lineChartView.xAxis.labelTextColor = .white
-        lineChartView.xAxis.valueFormatter = self
-        lineChartView.leftAxis.labelTextColor = .white
-        lineChartView.rightAxis.enabled = false
-        lineChartView.legend.enabled = false
+//        lineChartView.pinchZoomEnabled = false
+//        lineChartView.setScaleEnabled(false)
+//        lineChartView.xAxis.labelPosition = .bottom
+//        lineChartView.xAxis.labelTextColor = .white
+//        lineChartView.xAxis.valueFormatter = self
+//        lineChartView.leftAxis.labelTextColor = .white
+//        lineChartView.rightAxis.enabled = false
+//        lineChartView.legend.enabled = false
     }
     
     func setupChartData() {
@@ -83,7 +79,7 @@ class ChildAViewController: UIViewController, UITableViewDelegate {
         
         let data = LineChartData(dataSet: set1)
         
-        lineChartView.data = data
+//        lineChartView.data = data
     }
     
     func setupBindings() {
@@ -91,7 +87,7 @@ class ChildAViewController: UIViewController, UITableViewDelegate {
             .subscribe(onNext: { (x) in
                 // 차트 데이터 변경
                 Log.Verbose("차트 데이터 변경함")
-                self.lineChartView.data = nil
+//                self.lineChartView.data = nil
                 self.chartInfoResponse = x
                 self.setupChartData()
                 
@@ -136,33 +132,33 @@ class ChildAViewController: UIViewController, UITableViewDelegate {
         let currentPriceObservable = viewModel.currentPrice
             .distinctUntilChanged()
         
-        currentPriceObservable
-            .drive(usdPriceLabel.rx.text)
-            .disposed(by: disposeBag)
-        
-        currentPriceObservable
-            .map { $0.isEmpty }
-            .drive(usdPriceLabel.rx.isHidden)
-            .disposed(by: disposeBag)
+//        currentPriceObservable
+//            .drive(usdPriceLabel.rx.text)
+//            .disposed(by: disposeBag)
+//
+//        currentPriceObservable
+//            .map { $0.isEmpty }
+//            .drive(usdPriceLabel.rx.isHidden)
+//            .disposed(by: disposeBag)
         
         // Total Supply
-        let icxSupplyObservable = viewModel.icxSupply
-            .distinctUntilChanged()
-        
-        icxSupplyObservable
-            .drive(totalSupplyLabel.rx.text)
-            .disposed(by: disposeBag)
-        
-        icxSupplyObservable
-            .map { $0.isEmpty }
-            .drive(totalSupplyLabel.rx.isHidden)
-            .disposed(by: disposeBag)
+//        let icxSupplyObservable = viewModel.icxSupply
+//            .distinctUntilChanged()
+//
+//        icxSupplyObservable
+//            .drive(totalSupplyLabel.rx.text)
+//            .disposed(by: disposeBag)
+//
+//        icxSupplyObservable
+//            .map { $0.isEmpty }
+//            .drive(totalSupplyLabel.rx.isHidden)
+//            .disposed(by: disposeBag)
     }
     
     func setupUI() {
         tableView.insertSubview(refreshControl, at: 0)
-        totalSupplyLabel.isHidden = true
-        usdPriceLabel.isHidden = true
+//        totalSupplyLabel.isHidden = true
+//        usdPriceLabel.isHidden = true
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

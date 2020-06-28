@@ -32,3 +32,14 @@ struct TransactionBlock: Decodable {
     var targetContractAddr: String?
     var id: Int?
 }
+
+// MARK: - DataClass
+struct BlockInfo: Codable {
+    let height: Int
+    let lastBlock, createDate, peerId: String
+    let txCount: Int
+    let hash, prevHash: String
+    let blockSize: Int
+    let amount, fee: String
+    let message: String?
+}

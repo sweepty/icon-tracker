@@ -54,10 +54,18 @@ enum TrackerMethod: String {
     case getCurrentExchangeList = "/exchange/currentExchangeList"
     // address
     case getAddressList = "/address/list"
-    // contract
+    /// contract
     case getContractList = "/contract/list"
-    // block 가져오기
+    
+    // MARK: Block
+    /// block 가져오기
     case getBlockList = "/block/list"
+    /// get block height info
+    case getBlockInfo = "/block/info"
+    /// get block txList
+    case getBlockTxList = "/block/txList" // ?height=
+    
+    // MARK: Transaction
     // transaction recent tx
     case getTransactionRecentTx = "/transaction/recentTx"
     // transaction internal tx

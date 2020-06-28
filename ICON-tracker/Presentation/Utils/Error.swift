@@ -18,9 +18,9 @@ extension ICONTrackerError {
     var description: String {
         switch self {
         case .parsing:
-            return "🔥Parsing ERROR"
+            return "🔥 Parsing ERROR"
         case .network:
-            return "⛔️Network ERROR"
+            return "⛔️ Network ERROR"
         default:
             return "🤔 Unknwon ERROR"
         }

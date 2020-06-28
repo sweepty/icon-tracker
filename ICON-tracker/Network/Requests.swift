@@ -193,6 +193,20 @@ class TrackerService {
             })
     }
     
+    func getBlockInfo(network: Int, height: UInt64) -> Observable<BlockInfo> {
+        let request = TrackerRequests(network: network, method: .getBlockInfo, params: ["height": height])
+        return session.rx.data(request: request.createRequest())
+            .flatMap({ (value) -> Observable<BlockInfo> in
+                
+                let jsonVal = try JSONSerialization.jsonObject(with: value, options: .allowFragments) as! [String :Any]
+                let dataVal = jsonVal["data"]
+                let finalData = try JSONSerialization.data(withJSONObject: dataVal!, options: .prettyPrinted)
+                let decoded = try decoder.decode(BlockInfo.self, from: finalData)
+                
+                return Observable.just(decoded)
+            })
+    }
+    
     func getTransactionList(network: Int, page: Int) -> Observable<[TransactionBlock]> {
         let request = TrackerRequests(network: network, method: .getTransactionRecentTx, params: ["page": page, "count": 25])
 

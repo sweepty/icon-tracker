@@ -40,6 +40,13 @@ class BlockDetailViewController: UIViewController, UITableViewDelegate {
         tableView.rx.setDelegate(self).disposed(by: disposeBag)
         tableView.rowHeight = 120
         
+        self.hashLabel.textColor = ColorChip.topaz!
+        self.peerIdLabel.textColor = ColorChip.labelColor!
+        
+        self.amountLabel.textColor = ColorChip.labelColor!
+        self.timestampLabel.textColor = ColorChip.labelColor!
+        self.txfeeLabel.textColor = ColorChip.labelColor!
+        
         setupBind()
     }
     
@@ -69,25 +76,14 @@ class BlockDetailViewController: UIViewController, UITableViewDelegate {
         
         blockInfo
             .subscribe(onNext: { (blockInfo) in
-                self.hashLabel.text = blockInfo.blockHash
+                self.hashLabel.text = blockInfo.hash
                 self.peerIdLabel.text = blockInfo.peerId
                 
-                var amount: BigUInt = BigUInt()
-                var fee: Double = Double()
+                self.amountLabel.text = blockInfo.amount
+                self.timestampLabel.text = blockInfo.createDate
+                self.txfeeLabel.text = blockInfo.fee
                 
-                let list = blockInfo.confirmedTransactionList
-                
-                for i in list {
-                    if let amountValue = i.value {
-                        amount += amountValue.hexToBigUInt()!
-                    }
-                    if let feeValue = i.fee {
-                        fee += feeValue.hextoDouble()
-                    }
-                }
-                self.amountLabel.text = "\(amount)"
-                self.timestampLabel.text = blockInfo.timeStamp.toDateString()
-                self.txfeeLabel.text = "\(fee)"
+                print("blockInfo: \(blockInfo)")
             })
             .disposed(by: disposeBag)
         
